@@ -1,24 +1,16 @@
-% [u,err,x,t] = heat_cn(t_0,t_f,M,N)
-%
-% this solves the heat equation u_t = D u_xx with initial data u_0 =
-% sin(k x) with periodic boundary conditions using finite-differences in
-% space and Crank-Nicolson time-stepping.  t_0 is the initial time, t_f is the
-% final time, N is the number of intervals in space, and M is the number of
-% intervals in time.  err is the error. 
-%
-% If I'm going to use the FFT to analyse the solution then I'd like to  take
-% N of the form 2^k.  This will also have the advantage of making sure there's
-% always a meshpoint at x = pi
-
-t_0 = 0;
-t_f = 5.0;
-M = 100;
-N = 100;
+% The iterative sifting process of EMD represented by PDE
+% Author Heming Wang
 
 
 % define the mesh in space
+t_0 = 0;
+t_f = 5.0;
+M = 2000;
+N = 2^6;
+
 dx = 2.0/N;
-x = 0:dx:2-dx;
+x = 0:dx:2;
+
 x = x';
 
 % define the mesh in time
@@ -30,31 +22,6 @@ D = 1/(4*pi.^2);
 
 % define the ratio r
 r = D*dt/dx^2 
-
-% choose the wave number of the initial data and give its decay rate
-k = 2*pi;
-sigma = D*k^2;
-% define the initial data:
-u(:,1) = sin(k*x);
-err(:,1) = u(:,1) - exp(-sigma*(t(1)-t_0))*sin(k*x);
-
-% define the matrix A which has to be inverted at every time-step
-% because I know that the boundary conditions are periodic u(N+1) = u(1)
-% and so I won't actually solve for u(N+1) below, I'll just assign it 
-% a value once I know u(1)
-%
-% for internal points, have
-%    u_new(j) = u_old(j) + r/2*(u_old(j+1)-2*u_old(j)+u_old(j-1))
-% for the two end-points, have
-%    u_new(1) = u_old(1) + r/2*(u_old(2)-2*u_old(1)+u_old(0))     
-%             = u_old(1) + r/2*(u_old(2)-2*u_old(1)+u_old(N))     
-%    u_new(N) = u_old(N) + r/2*(u_old(N+1)-2*u_old(N)+u_old(N-1))     
-%             = u_old(N) + r/2*(u_old(1)-2*u_old(N)+u_old(N-1))     
-%
-% define the matrix A which has to be inverted at every time-step.
-%   u_new(1) - u_old(1) = dt/h^2 (u_new(2)-2*u_new(1)+u_new(N)
-%   u_new(i) - u_old(i) = dt/h^2 (u_new(i+1)-2*u_new(i)+u_new(i-1)
-%   u_new(N) - u_old(N) = dt/h^2 (u_new(2)-2*u_new(N)+u_new(N-1)
 
 A(1,N) = -r/2;
 A(1,1) = 1+r;
@@ -68,24 +35,43 @@ A(N,N-1) = -r/2;
 A(N,N) = 1+r;
 A(N,1) = -r/2;
 
-% Now that I have the matrix A defined I'm ready to do the timestepping.
-% This is because the matrix doesn't depend on time --- I can simply define
-% it at the beginning.
-for j=1:M
-  u_now = u(:,j);
-  RHS(1) = u_now(1) + r/2*(u_now(2)-2*u_now(1)+u_now(N));
-  for i=2:N-1
-    RHS(i) = u_now(i) + r/2*(u_now(i+1)-2*u_now(i)+u_now(i-1));
-  end
-  RHS(N) = u_now(N) + r/2*(u_now(1)-2*u_now(N)+u_now(N-1));
-  u(1:N,j+1) = periodic_tridiag(A,RHS);  
+% Initial Condition
+k = 2*pi;
+sigma = D*k^2;
 
-  err(:,j+1) = u(:,j+1) - exp(-sigma*(t(j+1)-t_0))*sin(k*x);
+% define the initial data:
+signal = sin(k*x)+ 0.6*sin(0.2*k*x);
+u(:,1) = signal;
+
+
+% Number of iterations
+iter_num = 10;
+
+for k = 1:iter_num
+
+    for j = 1:M
+    u_now = u(:,j);
+    % RHS(1) = u_now(1) + r/2*(u_now(2)-2*u_now(1)+u_now(N));
+    
+    for i = 2:N-1
+        RHS(i) = u_now(i) + r/2*(u_now(i+1)-2*u_now(i)+u_now(i-1));
+    end
+    RHS(N) = u_now(N) + r/2*(u_now(1)-2*u_now(N)+u_now(N-1));
+    u(1:N,j+1) = periodic_tridiag(A,RHS);  
+    end
+
+    % impose periodicity
+    % u(N+1,:) = u(1,:);
+    % u_now(N+1) = u_now(1);
+
+    % Substitute the IC into the process
+    mean_env = u(:,end);
+    u(:,1) = u(:,1) - mean_env;
 end
 
-% impose periodicity
-u(N+1,:)=u(1,:);
-err(N+1,:)=err(1,:);
-x(N+1)=2*pi;
-
-
+figure;
+plot(x,signal,'b-o');
+hold on;
+plot(x,u(:,1),'r-*');
+legend('Signal', 'IMF');
+title('signal: sin(2*pi*x)+ 0.6*sin(0.2*2*pi*x)');
