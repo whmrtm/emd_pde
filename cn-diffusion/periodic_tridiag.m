@@ -65,9 +65,13 @@ for i=1:n-2
   end
 end
 
-v2i = tri_diag(T,v2);
-v3i = tri_diag(T,v3);
-bbi = tri_diag(T,bb);
+% v2i = tri_diag(T,v2);
+% v3i = tri_diag(T,v3);
+% bbi = tri_diag(T,bb);
+
+v2i = inv(T)*v2;
+v3i = inv(T)*v3;
+bbi = inv(T)*bb;
 
 % use that the dot product is the transpose of one vector times the
 % other.  ' gives the transpose

@@ -10,7 +10,11 @@
 % N of the form 2^k.  This will also have the advantage of making sure there's
 % always a meshpoint at x = pi
 
-function [u,err,x,t] = heat_cn(t_0,t_f,M,N)
+t_0 = 0;
+t_f = 5.0;
+M = 100;
+N = 100;
+
 
 % define the mesh in space
 dx = 2.0/N;
@@ -22,13 +26,13 @@ dt = (t_f-t_0)/M;
 t = t_0:dt:t_f;
 
 % define the diffusivity
-D = 1/2;
+D = 1/(4*pi.^2);
 
 % define the ratio r
 r = D*dt/dx^2 
 
 % choose the wave number of the initial data and give its decay rate
-k = 3;
+k = 2*pi;
 sigma = D*k^2;
 % define the initial data:
 u(:,1) = sin(k*x);
@@ -83,3 +87,5 @@ end
 u(N+1,:)=u(1,:);
 err(N+1,:)=err(1,:);
 x(N+1)=2*pi;
+
+
