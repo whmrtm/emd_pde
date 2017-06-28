@@ -1,3 +1,6 @@
+
+%% Critical Value  
+
 T = 10.0;
 epsilon = exp(-T);
 % Number of iterations
@@ -41,4 +44,6 @@ title('Critical value variation');
 xlabel('\delta')
 ylabel('f_0')
 legend(legendInfo)
+
+
 

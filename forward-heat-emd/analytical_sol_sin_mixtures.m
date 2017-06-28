@@ -11,7 +11,7 @@ x = linspace(0,X,X/deltax+1);
 t = linspace(0,T,T/deltat);
 
 
-N = 50;
+N = 100;
 omega = 2*pi;
 sinu = @(a,b,omega,x) a.*sin(b.*omega*x);
 s1 = @(x) sinu(1,1,omega,x);
@@ -33,13 +33,13 @@ for i = 1:100
         (1-exp(-a*F.^2*omega.^2*T)).^N*s2(x);
 
         % Performance Measure 1
-        % pm = norm(imf - s1(x)) ./ norm(s2(x));
+        pm = norm(imf - s1(x)) ./ norm(s2(x));
 
         % Performance Measure 2
         % pm = norm(imf - s1(x)) ./ norm(s1(x));
 
         % Performance Measure 3
-        pm = norm(imf.*s1(x)) ./ norm(s1(x).^2);
+        % pm = norm(imf.*s1(x)) ./ norm(s1(x).^2);
         
         
         mypm(i,j) = pm;
@@ -59,10 +59,10 @@ set(gca,'XScale','log');
 set(get(gca,'XLabel'),'String','log_{10} a')
 set(get(gca,'YLabel'),'String','f')
 set(get(gca,'ZLabel'),'String','Performance Measure')
-% zlim([0,1]);
-% caxis([0,1]);
+zlim([0,1]);
+caxis([0,1]);
 
-zlim([0.5,4]);
-caxis([0.5,4]);
+% zlim([0.5,4]);
+% caxis([0.5,4]);
 colorbar()
 
