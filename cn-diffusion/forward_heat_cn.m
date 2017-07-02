@@ -1,8 +1,9 @@
 % The iterative sifting process of EMD represented by PDE
 % Author Heming Wang
 
+% TODO: wrap this to a function
 
-% define the mesh in space
+% Define the mesh in space
 t_0 = 0;
 t_f = 5.0;
 M = 2000;
@@ -23,6 +24,7 @@ D = 1/(4*pi.^2);
 % define the ratio r
 r = D*dt/dx^2 
 
+A = zeros(N,N);
 A(1,N) = -r/2;
 A(1,1) = 1+r;
 A(1,2) = -r/2;
@@ -36,42 +38,80 @@ A(N,N) = 1+r;
 A(N,1) = -r/2;
 
 % Initial Condition
-k = 2*pi;
-sigma = D*k^2;
+wave_num = 2.0.*pi;
+sigma = D*wave_num^2;
+signal = sin(wave_num*x)+ 0.4*sin(0.2*wave_num*x);
 
-% define the initial data:
-signal = sin(k*x)+ 0.6*sin(0.2*k*x);
-u(:,1) = signal;
 
 
 % Number of iterations
 iter_num = 10;
+% Max IMF number 
+IMF_num = 3;
+IMF = [];
 
-for k = 1:iter_num
+% From this point, the following parameters are needed:
+% N, M, signal, sigma,
+% iter_num, IMF_num
 
-    for j = 1:M
-    u_now = u(:,j);
-    % RHS(1) = u_now(1) + r/2*(u_now(2)-2*u_now(1)+u_now(N));
+
+u = zeros(N+1, M);
+residule = signal;
+
+
+for a = 1:IMF_num
+    % Extract IMF functions
+    u = repmat(residule,1,M);
+
+    fprintf('Calculating the %i IMF\n', a);
+    for k = 1:iter_num
+
+        fprintf('The %i th iteration\n', k);
+        for j = 1:M
+        u_now = u(:,j);       
+            for i = 2:N-1
+                RHS(i) = u_now(i) + r/2*(u_now(i+1)-2*u_now(i)+u_now(i-1));
+            end
+        RHS(N) = u_now(N) + r/2*(u_now(1)-2*u_now(N)+u_now(N-1));
+        u(1:N,j+1) = periodic_tridiag(A,RHS);  
+        end
+
+        % impose periodicity
+        % u(N+1,:) = u(1,:);
+        % u_now(N+1) = u_now(1);
+
+        % Substitute the IC into the process
+        mean_env = u(:,end);
+        temp_res = u(:,1) - mean_env;
+        if rms(mean_env) < 0.01
+            fprintf('Meet Stop Cretiron, break the iterations\n');
+            break;
+        end
+        u = repmat(temp_res,1,M);
+
+    end
+
+    if rms(temp_res) < 0.03
+        fprintf('Meet Stop Cretiron, stop finding IMFs\n');
+        break;
+    end
     
-    for i = 2:N-1
-        RHS(i) = u_now(i) + r/2*(u_now(i+1)-2*u_now(i)+u_now(i-1));
-    end
-    RHS(N) = u_now(N) + r/2*(u_now(1)-2*u_now(N)+u_now(N-1));
-    u(1:N,j+1) = periodic_tridiag(A,RHS);  
-    end
+    fprintf('------------------------------------\n');
 
-    % impose periodicity
-    % u(N+1,:) = u(1,:);
-    % u_now(N+1) = u_now(1);
+    IMF = [IMF temp_res];
+    residule = residule - IMF(:,end);
 
-    % Substitute the IC into the process
-    mean_env = u(:,end);
-    u(:,1) = u(:,1) - mean_env;
 end
 
-figure;
-plot(x,signal,'b-o');
+figure();
+plot(x, signal);
 hold on;
-plot(x,u(:,1),'r-*');
-legend('Signal', 'IMF');
-title('signal: sin(2*pi*x)+ 0.6*sin(0.2*2*pi*x)');
+plot(x, IMF(:,1),'-o');
+
+
+% % Plot the result
+% figure();
+% subplot(6,1,1); plot(x,signal);
+% for i = 2:2+IMF_num-1
+%     subplot(6,1,i); plot(x,IMF(:,i-1));
+% end
