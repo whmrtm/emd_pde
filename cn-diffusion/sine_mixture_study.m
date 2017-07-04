@@ -2,7 +2,7 @@
 % Define the mesh in space
 t_0 = 0;
 t_f = 5.0;
-M = 100;
+M = 400;
 N = 100;
 
 dx = 2.0/N;
