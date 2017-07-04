@@ -38,7 +38,7 @@ A(N,N) = 1+r;
 A(N,1) = -r/2;
 
 % Initial Condition
-wave_num = 4.0.*pi;
+wave_num = 2.0.*pi;
 sigma = D*wave_num^2;
 signal = sin(wave_num*x)+ 0.4*sin(0.2*wave_num*x);
 
@@ -87,12 +87,7 @@ for a = 1:IMF_num
             fprintf('Meet Stop Cretiron, break the iterations\n');
             break;
         end
-
-
         u = repmat(temp_res,1,M);
-
-        
-
 
     end
 
@@ -108,11 +103,10 @@ for a = 1:IMF_num
 
 end
 
-% figure();
-% plot(x, signal);
-% hold on;
-% plot(x, IMF(:,end));
-% plot(x, residule);
+figure();
+plot(x, signal);
+hold on;
+plot(x, IMF(:,1),'-o');
 
 
 % % Plot the result
