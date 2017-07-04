@@ -1,8 +1,8 @@
 
 % Define the mesh in space
 t_0 = 0;
-t_f = 5.0;
-M = 400;
+t_f = 10.0;
+M = 100;
 N = 100;
 
 dx = 2.0/N;
@@ -34,7 +34,7 @@ for i = 1:10
         f = fs(j);
         s2 = alpha.*sin(f.*wave_num*x);
         signal = s1 + s2;
-        [IMF, residule] = forward_EMD_pde(N, M, D, r, signal, 70, 1);
+        [IMF, residule] = forward_EMD_pde(N, M, D, r, signal, 100, 1);
         HFC = IMF(:,1);
 
         pms(i,j) = norm(HFC - s1) ./ norm(s1);

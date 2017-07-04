@@ -21,7 +21,7 @@
 
 
 %% 3D plot of the params
-<<<<<<< HEAD
+
 T = linspace(3,30,100);
 % Number of iterations
 N = linspace(1,500,100);
@@ -44,21 +44,10 @@ for i = 1:100
 end
 
 [myT, myN] = meshgrid(T, N);
-
-=======
-T = linspace(10,20,100);
-% Number of iterations
-N = linspace(1,500,100);
-
-delta = 0.001;
-[myT, myN] = meshgrid(T, N);
-
-Z = sqrt( log(1-(delta).^(1./myN)) ./ (-myT) );
->>>>>>> 073734afd9004ac62514d5ee8fe9d46236659401
 surf(myT, myN, Z);
 set(get(gca,'XLabel'),'String','T')
 set(get(gca,'YLabel'),'String','N')
-set(get(gca,'ZLabel'),'String','Critical frequency')
+set(get(gca,'ZLabel'),'String','Cutoff frequency')
 zlim([0,1]);
 caxis([0,1]);
 colorbar()
