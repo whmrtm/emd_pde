@@ -83,7 +83,7 @@ end
 
         end
 
-        if rms(temp_res) < 0.03
+        if rms(temp_res) < 0.01
             % fprintf('Meet Stop Cretiron, stop finding IMFs\n');
             break;
         end
