@@ -39,11 +39,7 @@ for i = 1:10
         f = fs(j);
         s2 = alpha.*sin(f.*wave_num*x);
         signal = s1 + s2;
-<<<<<<< HEAD
         [IMF, residule] = forward_EMD_pde(N, M, D, r, signal, 100, 1);
-=======
-        [IMF, residule] = forward_EMD_pde(N, M, D, r, signal, 70, 1);
->>>>>>> da1d1e2524d3e39572cb074eddb01d7558e6a1d1
         HFC = IMF(:,1);
 
         pms(i,j) = norm(HFC - s1) ./ norm(s1);
