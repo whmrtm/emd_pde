@@ -1,13 +1,8 @@
 
 % Define the mesh in space
 t_0 = 0;
-<<<<<<< HEAD
 t_f = 10.0;
 M = 100;
-=======
-t_f = 5.0;
-M = 400;
->>>>>>> da1d1e2524d3e39572cb074eddb01d7558e6a1d1
 N = 100;
 
 dx = 2.0/N;
