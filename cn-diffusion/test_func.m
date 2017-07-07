@@ -5,7 +5,7 @@ t_f = 6.0;
 M = 100;
 N = 400;
 
-dx = 2.0/(N-1);
+dx = 6.0/(N-1);
 x = 0:dx:2;
 
 x = x';
@@ -58,12 +58,28 @@ r = D*dt/dx^2;
 % r = D*dt/dx^2;
 
 
+% % Infra Sound data
+% load('../Infra-sound-data/infra-2');
+% signal = sample';
 
-max_iter = 50;
+% N = length(signal);
+% L = N/50;
+% dx = L/(N-1);
+% x = 0:dx:L;
+% x = x';
+% D = 1/(200*pi.^2);
+% % define the ratio r
+% r = D*dt/dx^2;
+
+
+
+
+
+max_iter = 100;
 IMF_num = 3;
 
 
-[IMF, residule] = forward_EMD_pde(N, M, D, r, signal, max_iter, IMF_num);
+[IMF, residule] = forward_EMD_pde(N, M, r, signal, max_iter, IMF_num);
 HFC = IMF(:,1);
 
 % pm = norm(HFC - s1) ./ norm(s1);

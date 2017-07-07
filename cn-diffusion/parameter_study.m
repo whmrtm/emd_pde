@@ -6,7 +6,7 @@ t_f = 10.0;
 M = 100;
 N = 100;
 
-dx = 4.0/N;
+dx = 2.0/(N-1);
 x = 0:dx:2;
 
 x = x';
@@ -32,8 +32,8 @@ for i = 1:100
     f = fs(i);
     s2 = alpha.*sin(f.*wave_num.*x);
     signal = s1 + s2;
-    [IMF, residule] = forward_EMD_pde(N, M, D, r, signal, 100, 1);
+    [IMF, residule] = forward_EMD_pde(N, M, r, signal, 100, 1);
     HFC = IMF(:,1);
-    pm(i) = norm(IMF - s1) ./ norm(s1);
+    pm(i) = norm(HFC - s1) ./ norm(s1);
 end
 plot(fs, pm)

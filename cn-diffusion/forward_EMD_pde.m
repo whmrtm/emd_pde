@@ -1,4 +1,4 @@
-function [IMF, residule] = forward_EMD_pde(N, M, a, r, signal, iter_num, IMF_num)
+function [IMF, residule] = forward_EMD_pde(N, M, r, signal, iter_num, IMF_num)
 % TODO: add time condtion inside the function
 
 % Check the number of inputs

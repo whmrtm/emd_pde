@@ -3,12 +3,12 @@
 
 % Define the mesh in space
 t_0 = 0;
-t_f = 2;
+t_f = 5;
 M = 200;
-N = 200;
+N = 400;
 
-dx = 2.0/(N-1);
-x = 0:dx:2;
+dx = 6.0/(N-1);
+x = 0:dx:6;
 x = x';
 
 % define the mesh in time
@@ -56,5 +56,5 @@ mean_env = u(:,end);
 figure();
 plot(x, signal);
 hold on;
-plot(x, mean_env,'-o');
+plot(x, mean_env);
 legend('signal', 'mean envelope');
