@@ -1,4 +1,4 @@
-function [IMF, residule] = forward_EMD_pde(N, M, a, r, signal, iter_num, IMF_num)
+function [IMF, residule] = forward_EMD_pde(N, M, r, signal, iter_num, IMF_num)
 % TODO: add time condtion inside the function
 
 % Check the number of inputs
@@ -26,22 +26,18 @@ end
 
     % Matrix for PDE computation
     A = zeros(N,N);
-    A(1,N) = -r/2;
-    A(1,1) = 1+r;
-    A(1,2) = -r/2;
+    A(1,1) = 1;
     for j=2:N-1
-    A(j,j-1) = -r/2;
-    A(j,j) = 1+r;
-    A(j,j+1) = -r/2;
+        A(j,j-1) = -r/2;
+        A(j,j) = 1+r;
+        A(j,j+1) = -r/2;
     end
-    A(N,N-1) = -r/2;
-    A(N,N) = 1+r;
-    A(N,1) = -r/2;
+    A(end,end) = 1;
 
 
     % Initialization
     IMF = [];
-    u = zeros(N+1, M);
+    u = zeros(N, M);
     residule = signal;
 
 
@@ -56,12 +52,13 @@ end
             RHS = zeros(1, N);
             for j = 1:M
                 u_now = u(:,j);       
-
+                RHS(1) = u_now(1);
                 for i = 2:N-1
                     RHS(i) = u_now(i) + r/2*(u_now(i+1)-2*u_now(i)+u_now(i-1));
                 end
                 % RHS(N) = u_now(N);
-                RHS(N) = u_now(N) + r/2*(u_now(1)-2*u_now(N)+u_now(N-1));
+                RHS(N) = u_now(N);
+
                 u(1:N,j+1) = periodic_tridiag(A,RHS);  
             end
 
@@ -72,7 +69,7 @@ end
             % Substitute the IC into the process
             mean_env = u(:,end);
             temp_res = u(:,1) - mean_env;
-            if rms(mean_env) < 0.01
+            if rms(mean_env) < 0.001
                 % fprintf('Meet Stop Cretiron, break the iterations\n');
                 break;
             end
@@ -83,7 +80,7 @@ end
 
         end
 
-        if rms(temp_res) < 0.01
+        if rms(temp_res) < 0.001
             % fprintf('Meet Stop Cretiron, stop finding IMFs\n');
             break;
         end

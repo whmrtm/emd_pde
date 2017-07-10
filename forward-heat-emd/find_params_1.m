@@ -22,6 +22,10 @@
 
 %% 3D plot of the params
 <<<<<<< HEAD
+
+T = linspace(3,30,100);
+=======
+<<<<<<< HEAD
 T = linspace(3,30,100);
 % Number of iterations
 N = linspace(1,500,100);
@@ -47,18 +51,37 @@ end
 
 =======
 T = linspace(10,20,100);
+>>>>>>> da1d1e2524d3e39572cb074eddb01d7558e6a1d1
 % Number of iterations
 N = linspace(1,500,100);
 
-delta = 0.001;
-[myT, myN] = meshgrid(T, N);
+delta = 0.01;
 
+adj_const = 5;
+Z = zeros(100,100);
+
+<<<<<<< HEAD
+for i = 1:100
+    for j = 1:100
+        t = T(i); n = N(j);
+        epsilon = exp(-t);
+        if (1-epsilon).^n > 1-adj_const*delta
+            Z(i,j) = sqrt( log(1-(delta).^(1./n)) ./ (-t) );
+        else
+            Z(i,j) = 0;
+        end
+    end
+end
+
+[myT, myN] = meshgrid(T, N);
+=======
 Z = sqrt( log(1-(delta).^(1./myN)) ./ (-myT) );
 >>>>>>> 073734afd9004ac62514d5ee8fe9d46236659401
+>>>>>>> da1d1e2524d3e39572cb074eddb01d7558e6a1d1
 surf(myT, myN, Z);
 set(get(gca,'XLabel'),'String','T')
 set(get(gca,'YLabel'),'String','N')
-set(get(gca,'ZLabel'),'String','Critical frequency')
+set(get(gca,'ZLabel'),'String','Cutoff frequency')
 zlim([0,1]);
 caxis([0,1]);
 colorbar()
