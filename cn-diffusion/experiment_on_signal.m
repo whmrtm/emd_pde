@@ -2,11 +2,11 @@
 % Define the mesh in space
 t_0 = 0;
 t_f = 5.0;
-M = 400;
-N = 200;
+M = 100;
+N = 100;
 
 dx = 2.0/(N-1);
-x = 0:dx:2;
+x = 0:dx:2.0;
 
 x = x';
 
@@ -20,23 +20,26 @@ D = 1/(4*pi.^2);
 % define the ratio r
 r = D*dt/dx^2;
 
-% Sine mixture signal 1
-alpha = 0.2;
-f = 20;
-wave_num = pi;
-s1 = sin(wave_num.*x);
-s2 = alpha.*sin(f.*wave_num*x);
-signal = s1 + s2;
+% % Sine mixture signal 1
+% alpha = 0.2;
+% f = 20;
+% wave_num = pi;
+% s1 = sin(wave_num.*x);
+% s2 = alpha.*sin(f.*wave_num*x);
+% signal = s1 + s2;
 
 
 % % Sine mixture signal 2
 % signal = 0.5*cos(2*pi*x) + 2*cos(0.1*pi*x) + 0.8*cos(0.5*pi*x);
 
+% ---------------------------------
 
-% % 2-mode signal mixing
+% 2-mode signal mixing
 % L = length(x);
 % signal = sin(4*pi.*[x(1:L/2); zeros(L/2,1)] ) + ...
 %  sin(24*pi.*[zeros(L/2,1); x(L/2+1:end)]);
+
+% -------------------------------------
 
 % % ECG data
 % load('../ECG-data/ECG-data');
@@ -57,6 +60,9 @@ signal = s1 + s2;
 % % define the ratio r
 % r = D*dt/dx^2;
 
+% -------------------------------------
+
+
 
 % % Infra Sound data
 % load('../Infra-sound-data/infra-2');
@@ -71,11 +77,41 @@ signal = s1 + s2;
 % % define the ratio r
 % r = D*dt/dx^2;
 
+% -------------------------------------
+
+% % AM data
+% carrier = sin(6*pi.*x);
+% am = sin(2*pi*x);
+% D = 1/(36*pi.^2);
+% signal = (1+ am*2).*carrier;
+
+
+% -------------------------------------
+
+% FM data
+% f_c = 1;
+% f_m = 8;
+% beta = 0.5;
+% signal = cos(2*pi*f_c.*x + beta.*sin(2*pi*f_m.*x));
+
+
+% -------------------------------------
+
+% Music Signal
+load('../music-data/piano_sample');
+signal = piano_sample;
+N = length(signal);
+L = N/50;
+dx = L/(N-1);
+x = 0:dx:L;
+x = x';
+D = 1/(0.01*pi.^2);
+% define the ratio r
+r = D*dt/dx^2;
 
 
 
-
-max_iter = 100;
+max_iter = 50;
 IMF_num = 3;
 
 
