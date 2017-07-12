@@ -1,12 +1,12 @@
 
 % Define the mesh in space
 t_0 = 0;
-t_f = 10.0;
+t_f = 5.0;
 M = 100;
-N = 400;
+N = 100;
 
-dx = 6.0/(N-1);
-x = 0:dx:6;
+dx = 2.0/(N-1);
+x = 0:dx:2.0;
 
 x = x';
 
@@ -42,7 +42,7 @@ r = D*dt/dx^2;
 % -------------------------------------
 
 % % ECG data
-% load('../ECG-data/ECG-data');
+% load('../data/ECG-data/ECG-data');
 % signal = sig_sample_1;
 % L = tm_sample_1(end) - tm_sample_1(1);
 % N = length(sig_sample_1);
@@ -65,7 +65,7 @@ r = D*dt/dx^2;
 
 
 % % Infra Sound data
-% load('../Infra-sound-data/infra-2');
+% load('../data/Infra-sound-data/infra-2');
 % signal = sample';
 
 % N = length(signal);
@@ -82,20 +82,36 @@ r = D*dt/dx^2;
 % % AM data
 % carrier = sin(6*pi.*x);
 % am = sin(2*pi*x);
-% signal = (2+ am*0.5).*carrier;
+% D = 1/(36*pi.^2);
+% signal = (1+ am*2).*carrier;
 
 
 % -------------------------------------
 
 % FM data
-f_c = 1;
-f_m = 8;
-beta = 0.5;
-signal = cos(2*pi*f_c.*x + beta.*sin(2*pi*f_m.*x));
+% f_c = 1;
+% f_m = 8;
+% beta = 0.5;
+% signal = cos(2*pi*f_c.*x + beta.*sin(2*pi*f_m.*x));
+
+
+% -------------------------------------
+
+% Music Signal
+load('../data/music-data/piano_sample');
+signal = piano_sample;
+N = length(signal);
+L = N/50;
+dx = L/(N-1);
+x = 0:dx:L;
+x = x';
+D = 1/(0.0004*pi.^2);
+% define the ratio r
+r = D*dt/dx^2;
 
 
 
-max_iter = 100;
+max_iter = 50;
 IMF_num = 3;
 
 

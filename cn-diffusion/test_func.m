@@ -1,11 +1,11 @@
 
 % Define the mesh in space
 t_0 = 0;
-t_f = 6.0;
-M = 100;
-N = 400;
+t_f = 5.0;
+M = 400;
+N = 200;
 
-dx = 6.0/(N-1);
+dx = 2.0/(N-1);
 x = 0:dx:2;
 
 x = x';
@@ -20,13 +20,13 @@ D = 1/(4*pi.^2);
 % define the ratio r
 r = D*dt/dx^2;
 
-% % Sine mixture signal 1
-% alpha = 0.2;
-% f = 20;
-% wave_num = pi;
-% s1 = sin(wave_num.*x);
-% s2 = alpha.*sin(f.*wave_num*x);
-% signal = s1 + s2;
+% Sine mixture signal 1
+alpha = 0.2;
+f = 20;
+wave_num = pi;
+s1 = sin(wave_num.*x);
+s2 = alpha.*sin(f.*wave_num*x);
+signal = s1 + s2;
 
 
 % % Sine mixture signal 2

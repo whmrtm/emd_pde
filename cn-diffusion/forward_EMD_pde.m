@@ -11,13 +11,13 @@ if nargin < 5
 end
 
 % Fill in unset optional values
-switch nargin
-case 5
-    iter_num = 20;
-    IMF_num = 5;
-case 6
-    IMF_num = 5;
-end
+% switch nargin
+% case 5
+%     iter_num = 20;
+%     IMF_num = 5;
+% case 6
+%     IMF_num = 5;
+% end
 
 
 
@@ -45,10 +45,10 @@ end
         % Extract IMF functions
         u = repmat(residule,1,M);
 
-        % fprintf('Calculating the %i IMF\n', L);
+        fprintf('Calculating the %i IMF\n', L);
         for k = 1:iter_num
 
-            % fprintf('The %i th iteration\n', k);
+            fprintf('The %i th iteration\n', k);
             RHS = zeros(1, N);
             for j = 1:M
                 u_now = u(:,j);       
@@ -68,27 +68,31 @@ end
 
             % Substitute the IC into the process
             mean_env = u(:,end);
-            temp_res = u(:,1) - mean_env;
             if rms(mean_env) < 0.001
-                % fprintf('Meet Stop Cretiron, break the iterations\n');
+                fprintf('Meet Stop Cretiron, break the iterations\n');
                 break;
             end
-
-
+            temp_res = u(:,1) - mean_env;
             u = repmat(temp_res,1,M);
 
 
         end
 
-        if rms(temp_res) < 0.001
-            % fprintf('Meet Stop Cretiron, stop finding IMFs\n');
+
+        if rms(temp_res) < 0.01
+            fprintf('Meet Stop Cretiron, stop finding IMFs\n');
             break;
         end
         
         % fprintf('------------------------------------\n');
 
         IMF = [IMF temp_res];
-        residule = residule - IMF(:,end);
+        residule = residule - temp_res;
+
+        figure();
+        plot(IMF(:,end));
+        hold on;
+        plot(residule);
     end
 
     % figure();
