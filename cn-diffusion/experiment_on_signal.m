@@ -8,7 +8,6 @@ N = 100;
 dx = 2.0/(N-1);
 x = 0:dx:2.0;
 
-x = x';
 
 % define the mesh in time
 dt = (t_f-t_0)/M;
@@ -99,7 +98,7 @@ r = D*dt/dx^2;
 
 % Music Signal
 load('../data/music-data/piano_sample');
-signal = piano_sample;
+signal = piano_sample';
 N = length(signal);
 L = N/50;
 dx = L/(N-1);
@@ -116,24 +115,29 @@ IMF_num = 3;
 
 
 [IMF, residule] = forward_EMD_pde(N, M, r, signal, max_iter, IMF_num);
-HFC = IMF(:,1);
+HFC = IMF(1,:);
 
 % pm = norm(HFC - s1) ./ norm(s1);
 
 
-
+% plot signal, IMF and residules
 figure();
 subplot(3,1,1);
 plot(x, signal);
 ylabel('signal');
 
 subplot(3,1,2);
-plot(x, HFC, '-o');
+plot(x, IMF, '-o');
 ylabel('IMF_1');
 
 subplot(3,1,3);
 plot(x, residule, '-*');
 ylabel('Residule');
 
+
+% plot the Hilbert spectrum
+[A, ff, tt] = hhspectrum(IMF);
+[im, tt, ff] = toimage(A,ff);
+disp_hhs(im, tt);
 
 

@@ -1,13 +1,22 @@
-function [mean_env, gau] = conv_mean_env(x, signal, T)
-    L = length(x);
-    delta = sqrt(2.*T);
-    % Gaussian filter
-    mid_point = x(round(L/2));
-    new_x = linspace(mid_point-3*delta, mid_point+3*delta, 6*delta/x(end).*L);
-    gau = 1./sqrt(4*pi*T).*exp( - (new_x - mid_point).^2 ./(4.*T) );
-    gau = gau ./ norm(gau);
-    norm(gau)
-    mean_env = cconv(signal, gau, L);
+function [mean_env, gau] = conv_mean_env(signal, k, T)
+    
+    L = length(signal);
+    
+    delta = sqrt(2*k*T);
+    % % Gaussian filter
+    % gau = zeros(1, L);
+    % if x(end) < 6*delta
+    %     fprintf('Bad values for delta');
+    % end
+    % gau = 1./sqrt(4*pi*k*T).*exp( - (x).^2 ./(4*k*T) );
+    % gau = gau ./ norm(gau);
+    % norm(gau)
+
+    alpha = (L-1) ./ sqrt(8*k*T);
+    gau = gausswin(L, alpha);
+    gau = gau./sum(gau);
+
+    mean_env = conv(signal, gau, 'same');
 
 
     figure();
@@ -15,7 +24,10 @@ function [mean_env, gau] = conv_mean_env(x, signal, T)
     plot(signal);
     hold on;
     plot(mean_env);
+    legend('signal', 'mean');
+
     subplot(2,1,2);
     plot(gau);
+    legend('Gaussian');
 
 end

@@ -38,7 +38,7 @@
 function [A,f,tt] = hhspectrum(x,t,l,aff)
 
 
-addpath('~/heming/MEGA/Research/EMD/EMD_PDE/tftb');
+addpath('~/MEGA/Research/EMD/EMD_PDE/tftb/mfiles');
 error(nargchk(1,4,nargin));
 
 if nargin < 2
