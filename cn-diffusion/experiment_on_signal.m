@@ -34,9 +34,9 @@ r = D*dt/dx^2;
 % ---------------------------------
 
 % 2-mode signal mixing
-% L = length(x);
-% signal = sin(4*pi.*[x(1:L/2); zeros(L/2,1)] ) + ...
-%  sin(24*pi.*[zeros(L/2,1); x(L/2+1:end)]);
+L = length(x);
+signal = sin(4*pi.*[x(1:L/2); zeros(L/2,1)] ) + ...
+ sin(24*pi.*[zeros(L/2,1); x(L/2+1:end)]);
 
 % -------------------------------------
 
