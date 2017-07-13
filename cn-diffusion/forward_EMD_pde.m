@@ -24,6 +24,8 @@ end
 % The iterative sifting process of EMD represented by PDE
 % Author Heming Wang
 
+signal = signal';
+
     % Matrix for PDE computation
     A = zeros(N,N);
     A(1,1) = 1;
@@ -68,12 +70,11 @@ end
 
             % Substitute the IC into the process
             mean_env = u(:,end);
-            temp_res = u(:,1) - mean_env;
             if rms(mean_env) < 0.001
                 fprintf('Meet Stop Cretiron, break the iterations\n');
                 break;
             end
-
+            temp_res = u(:,1) - mean_env;
             u = repmat(temp_res,1,M);
 
 
@@ -90,12 +91,9 @@ end
         IMF = [IMF temp_res];
         residule = residule - temp_res;
 
-        figure();
-        plot(IMF(:,end));
-        hold on;
-        plot(residule);
     end
-
+    IMF = IMF';
+    residule = residule';
     % figure();
     % plot(signal, 'g-');
     % hold on;
