@@ -18,16 +18,20 @@ function [mean_env, gau] = conv_mean_env(signal, k, T)
 
     mean_env = conv(signal, gau, 'same');
 
+    % halfbandwidth = round(L./2);
+    % mean_env = conv(signal, gau);
+    % mean_env = mean_env(halfbandwidth: end-halfbandwidth);
 
-    figure();
-    subplot(2,1,1);
-    plot(signal);
-    hold on;
-    plot(mean_env);
-    legend('signal', 'mean');
 
-    subplot(2,1,2);
-    plot(gau);
-    legend('Gaussian');
+    % figure();
+    % subplot(2,1,1);
+    % plot(signal);
+    % hold on;
+    % plot(mean_env);
+    % legend('signal', 'mean');
+
+    % subplot(2,1,2);
+    % plot(gau);
+    % legend('Gaussian');
 
 end
