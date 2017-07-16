@@ -1,4 +1,4 @@
-function [IMFs, residule] = conv_emd(signal, k, T, iter_num, max_IMF)
+function [IMFs, residule] = conv_emd(x, signal, k, T, iter_num, max_IMF)
 
     L = length(signal);
     % k = 1;
@@ -16,7 +16,7 @@ function [IMFs, residule] = conv_emd(signal, k, T, iter_num, max_IMF)
         r = curr_signal;
         for i = 1:iter_num
             % fprintf(' %i th iterations\n', i);
-            [mean_env, gau] = conv_mean_env(r, k, T);
+            [mean_env, gau] = conv_mean_env(x, r, k, T);
             IMF = r-mean_env;
             % mean envelope stop creterion
             if rms(mean_env) < 0.01
