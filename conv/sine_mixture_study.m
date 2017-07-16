@@ -1,11 +1,11 @@
 %% sine mixture study regarding alphas and fs
-T = 2000.0;
+T = 10.0;
 L = 400;
 x = linspace(0,6,L);
 
 % define the diffusivity
-% k = 1/(4*pi.^2);
-k = 1;
+k = 1/(4*pi.^2);
+% k = 1;
 
 
 
@@ -22,7 +22,7 @@ for i = 1:100
         f = fs(j);
         s2 = alpha.*sin(f.*wave_num*x);
         signal = s1 + s2;
-        [IMFs, residule] = conv_emd(signal, k, T, 100, 1);
+        [IMFs, residule] = conv_emd(x, signal, k, T, 100, 1);
         HFC = IMFs(1,:);
 
         pms(i,j) = norm(HFC - s1) ./ norm(s1);

@@ -3,7 +3,7 @@
 
 % Define the mesh in space
 t_0 = 0;
-t_f = 5;
+t_f = 50;
 M = 200;
 N = 400;
 
@@ -16,7 +16,8 @@ dt = (t_f-t_0)/M;
 t = t_0:dt:t_f;
 
 % define the diffusivity
-D = 1/(4*pi.^2);
+% D = 1/(4*pi.^2);
+D = 1;
 
 % define the ratio r
 r = D*dt/dx^2 
