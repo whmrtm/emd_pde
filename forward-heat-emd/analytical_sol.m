@@ -13,8 +13,8 @@ t = linspace(0,T,T/deltat);
 
 N = 100;
 omega = 2*pi;
-A = 0.05;
-F = 0.02;
+A = 50;
+F = 0.8;
 sinu = @(a,b,omega,x) a*sin(b*omega*x);
 s1 = @(x) sinu(1,1,omega,x);
 

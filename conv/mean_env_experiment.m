@@ -18,8 +18,8 @@ T = 3;
 
 figure();
 subplot(2,1,1);
-plot(x, signal);
+plot(signal);
 hold on;
-plot(x, mean_env);
+plot(mean_env);
 subplot(2,1,2);
-plot(x, gau);
+plot(gau);

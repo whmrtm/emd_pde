@@ -1,5 +1,4 @@
 function [mean_env, gau] = conv_mean_env(x, signal, k, T)
-    
     L = length(signal);
     
     % % Gaussian filter

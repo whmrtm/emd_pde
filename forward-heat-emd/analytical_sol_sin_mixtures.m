@@ -29,14 +29,19 @@ for i = 1:100
         F = myF(i);
         s2 = @(x) sinu(A,F,omega,x);
         s = @(x) s1(x) + s2(x);
-        imf = (1-exp(-a*omega.^2*T)).^N*s1(x) + ...
-        (1-exp(-a*F.^2*omega.^2*T)).^N*s2(x);
+        % imf = (1-exp(-a*omega.^2*T)).^N*s1(x) + ...
+        % (1-exp(-a*F.^2*omega.^2*T)).^N*s2(x);
+
+
+        imf = exp(-N*exp(-a*omega.^2*T))*s1(x) + ...
+        exp(-N*exp(-a*F.^2*omega.^2*T))*s2(x);
+
 
         % Performance Measure 1
-        pm = norm(imf - s1(x)) ./ norm(s2(x));
+        % pm = norm(imf - s1(x)) ./ norm(s2(x));
 
         % Performance Measure 2
-        % pm = norm(imf - s1(x)) ./ norm(s1(x));
+        pm = norm(imf - s1(x)) ./ norm(s1(x));
 
         % Performance Measure 3
         % pm = norm(imf.*s1(x)) ./ norm(s1(x).^2);
