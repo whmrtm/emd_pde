@@ -1,7 +1,7 @@
 %% sine mixture study regarding alphas and fs
 T = 10.0;
 L = 400;
-x = linspace(0,6,L);
+x = linspace(0,10,L);
 
 % define the diffusivity
 k = 1/(4*pi.^2);

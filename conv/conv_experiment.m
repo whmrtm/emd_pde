@@ -5,9 +5,11 @@ x = linspace(0,6,L);
 
 % ---------------------------------
 
-% %ECG data
-% load('../data/ECG-data/ECG-data');
-% signal = sig_sample_1';
+%ECG data
+load('../data/ECG-data/ECG-data');
+signal = sig_sample_1';
+L = length(signal);
+x = linspace(0,6,L);
 
 % ---------------------------------
 
@@ -21,9 +23,9 @@ x = linspace(0,6,L);
 
 % ---------------------------------
 
-% 2-mode signal mixing
-signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
- sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
+% % 2-mode signal mixing
+% signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
+%  sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
 
 % ---------------------------------
 
@@ -64,16 +66,16 @@ signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 % load('../data/music-data/flute');
 % signal = flute_sample';
 
-load('../data/music-data/bendir');
-signal = bendir_sample';
-L = length(signal);
-x = linspace(0, round(L/200), L);
+% load('../data/music-data/bendir');
+% signal = bendir_sample';
+% L = length(signal);
+% x = linspace(0, round(L/200), L);
 
 
 
-k = 1./(3600*pi^2);
-T = 10;
-iter_num = 50;
+k = 1./(4*pi^2);
+T = 20;
+iter_num = 100;
 IMF_num = 3;
 
 [IMFs, residule] = conv_emd(x, signal, k, T, iter_num, IMF_num);
