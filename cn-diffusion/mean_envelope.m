@@ -34,7 +34,6 @@ A(end,end) = 1;
 % Initial Condition
 signal = 0.5*cos(2*pi*x) + 2*cos(0.1*pi*x) + 0.8*cos(0.5*pi*x);
 
-
 u = zeros(N, M);
 residule = signal;
 

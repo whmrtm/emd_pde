@@ -1,17 +1,8 @@
-%% sine mixture study regarding alphas and fs
-L = 600;
-x = linspace(0,10,L);
 
-% define the diffusivity
-k = 1/(4*pi.^2);
-
+pm2 = (1-exp(-f'.^2*T)).^N - (1-exp(-T)).^N;
 T = 30.0;
 max_iter = 150;
-% k = 1;
 
-
-
-wave_num = 2.0.*pi;
 alphas = logspace(-2, 2, 100);
 fs = linspace(0, 1, 100);
 pms = zeros(100, 100);

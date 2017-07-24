@@ -1,5 +1,4 @@
 function [mean_env, gau] = conv_mean_env(x, signal, k, T)
-    
     L = length(signal);
     
     % % Gaussian filter
@@ -21,12 +20,17 @@ function [mean_env, gau] = conv_mean_env(x, signal, k, T)
     % gau = gaussmf(x, [sigma c]);
 
     % alpha = (L-1) ./ sqrt(8*k*T);
+
+    % halfbandwidth = round(L./2);
+    mean_env = conv(signal, gau,'same');
+
+    
     % mean_env = cconv(signal, gau, L);
 
-    % halfbandwidth = round(L./2);s
-    mean_env = conv(signal, gau,'same');
     % mean_env = mean_env(halfbandwidth: end-halfbandwidth);
 
+    % % Try Median Filter
+    % mean_env = medfilt1(signal, 3);
 
     % figure();
     % subplot(2,1,1);
