@@ -1,10 +1,12 @@
 %% sine mixture study regarding alphas and fs
-T = 10.0;
-L = 400;
+L = 600;
 x = linspace(0,10,L);
 
 % define the diffusivity
 k = 1/(4*pi.^2);
+
+T = 10.0;
+max_iter = 2000;
 % k = 1;
 
 
@@ -18,14 +20,15 @@ s1 = sin(wave_num.*x);
 
 for i = 1:100
     for j = 1:100
-        alpha = alphas(i);
-        f = fs(j);
+        alpha = alphas(j);
+        f = fs(i);
         s2 = alpha.*sin(f.*wave_num*x);
         signal = s1 + s2;
-        [IMFs, residule] = conv_emd(x, signal, k, T, 100, 1);
+        [IMFs, residule] = conv_emd(x, signal, k, T, max_iter, 1);
         HFC = IMFs(1,:);
 
         pms(i,j) = norm(HFC - s1) ./ norm(s1);
+        % pms(i,j) = norm(HFC - s1) ./ norm(s2);
 
         fprintf('%i,%i\n',i,j);
 
@@ -41,7 +44,7 @@ set(gca, 'XScale', 'log');
 set(get(gca,'XLabel'),'String','alpha');
 set(get(gca,'YLabel'),'String','f');
 set(get(gca,'ZLabel'),'String','Performance Measure');
-zlim([0,1]);
+% zlim([0,100]);
 caxis([0,1]);
 
 colorbar();
