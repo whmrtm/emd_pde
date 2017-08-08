@@ -35,8 +35,8 @@ r = D*dt/dx^2;
 
 % 2-mode signal mixing
 L = length(x);
-signal = sin(4*pi.*[x(1:L/2); zeros(L/2,1)] ) + ...
- sin(24*pi.*[zeros(L/2,1); x(L/2+1:end)]);
+signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
+ sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
 
 % -------------------------------------
 
@@ -136,7 +136,7 @@ ylabel('Residule');
 
 
 % plot the Hilbert spectrum
-[A, ff, tt] = hhspectrum(IMF);
+[A, ff, tt] = hhspectrum(IMF,1:length(),);
 [im, tt, ff] = toimage(A,ff);
 disp_hhs(im, tt);
 

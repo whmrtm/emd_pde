@@ -1,3 +1,6 @@
+%% Experiment on different signals using convolution implementation
+
+
 L = 400;
 x = linspace(0,6,L);
 
@@ -5,11 +8,11 @@ x = linspace(0,6,L);
 
 % ---------------------------------
 
-%ECG data
-load('../data/ECG-data/ECG-data');
-signal = sig_sample_1';
-L = length(signal);
-x = linspace(0,6,L);
+% %ECG data
+% load('../data/ECG-data/ECG-data');
+% signal = sig_sample_1';
+% L = length(signal);
+% x = linspace(0,6,L);
 
 % ---------------------------------
 
@@ -23,9 +26,9 @@ x = linspace(0,6,L);
 
 % ---------------------------------
 
-% % 2-mode signal mixing
-% signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
-%  sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
+% 2-mode signal mixing
+signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
+ sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
 
 % ---------------------------------
 
@@ -76,9 +79,9 @@ x = linspace(0,6,L);
 k = 1./(4*pi^2);
 T = 20;
 iter_num = 100;
-IMF_num = 3;
+IMF_num = 1;
 
-[IMFs, residule] = conv_emd(x, signal, k, T, iter_num, IMF_num);
+[IMFs, residule] = conv_emd(x, signal, k, T, iter_num, IMF_num, 0, 1);
 
 IMF_num = size(IMFs, 1);
 subplot(IMF_num+2,1,1);
@@ -92,3 +95,10 @@ end
 subplot(IMF_num+2,1,IMF_num+2);
 plot(x, residule);
 legend('residule')
+
+
+% plot the Hilbert spectrum
+myIMF = [IMFs; residule];
+[A, ff, tt] = hhspectrum(myIMF,1:size(myIMF,2),2,1);
+[im, tt, ff] = toimage(A,ff);
+disp_hhs(im, tt);
