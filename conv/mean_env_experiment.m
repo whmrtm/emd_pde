@@ -1,3 +1,4 @@
+% Demo of mean envelope extraction
 L = 400;
 x = linspace(0,6,L);
 
@@ -16,6 +17,8 @@ T = 3;
 %     hold on;
 % end
 
+
+% plot the result
 figure();
 subplot(2,1,1);
 plot(signal);

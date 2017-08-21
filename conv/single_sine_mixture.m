@@ -1,4 +1,4 @@
-%% sine mixture study regarding alphas and fs
+%% sine mixture study regarding single set of params alpha and f
 L = 600;
 x = linspace(0,10,L);
 

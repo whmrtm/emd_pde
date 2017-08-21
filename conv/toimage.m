@@ -29,7 +29,7 @@ function [im,tt,ff] = toimage(A,f,varargin)
 
 DEFSPL = 400;
 
-error(nargchk(2,5,nargin));
+% error(nargchk(2,5,nargin));
 
 switch nargin
   case 2
@@ -90,6 +90,7 @@ if any(diff(diff(t))) && splx ~= length(t)
   warning('toimage:nonuniformtimeinsants','When splx differs from length(t), the function only works for equally spaced time instants. You may consider reformating your data (using e.g. interpolation) before using toimage.')
 end
 
+% f \in (0, 0.5)
 f = min(f,0.5);
 f = max(f,0);
 

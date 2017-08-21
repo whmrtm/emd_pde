@@ -1,4 +1,36 @@
-function [IMFs, residule] = conv_emd(x, signal, k, T, iter_num, max_IMF, stop_criterion, k_finding)
+
+% Implement forward-EMD by convolution with Gaussian  
+% 
+% function [IMFs, residual] = conv_emd(x, signal, k, T, iter_num, max_IMF, stop_criterion, k_finding)
+%
+% inputs:
+%   - x   : x indexes of Signal
+%   - signal   : discrete signal
+%   - k   : parameter of the diffusion equation u'' = k du/dt
+%   - T : Paramter to control the diffusion time
+%   - iter_num : max number iterations for each sifting process, dafault 50
+%   - max_IMF : Max number of IMF to find, default 3
+%   - stop_criterion : stop criterion, default to be 0.
+%   - k_finding : Determine how to find the parameter k, default to be 0.
+%
+% outputs:
+%   - IMFs   : Extracted IMFs 
+%   - residule   : Residual after applying EMD
+%
+%
+% Examples:
+% x = linspace(0, 1, 100);
+% signal = sin(2*pi.*x) + 2.5*sin(0.2*pi.*x);
+% k = 1./(4*pi^2);
+% T = 10;
+% [IMFs, residual] = conv_emd(x, signal, k, T);
+% [IMFs, residual] = conv_emd(x, signal, k, T, 100, 2, 1, 1);
+%
+%
+% Heming Wang 
+% h422wang@uwaterloo.ca
+
+function [IMFs, residual] = conv_emd(x, signal, k, T, iter_num, max_IMF, stop_criterion, k_finding)
 
     if nargin < 4 or nargin > 8
         disp('Error');
@@ -43,7 +75,7 @@ function [IMFs, residule] = conv_emd(x, signal, k, T, iter_num, max_IMF, stop_cr
             fprintf('No IMF\n');
             max_IMF = 0;
             IMFs = [IMFs; zeros(1, length(signal))];
-            residule = signal;
+            residual = signal;
         end
     end
     
@@ -100,7 +132,7 @@ function [IMFs, residule] = conv_emd(x, signal, k, T, iter_num, max_IMF, stop_cr
 
     end
 
-    residule = curr_signal;
+    residual = curr_signal;
 
 end
 

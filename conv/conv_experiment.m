@@ -1,18 +1,17 @@
 %% Experiment on different signals using convolution implementation
 
-
 L = 400;
 x = linspace(0,6,L);
+fs = round(L./x(end));
 
+% %Three sinusoids
 % signal = 0.5*cos(2*pi*x) + 2*cos(0.1*pi*x) + 0.8*cos(0.5*pi*x);
 
 % ---------------------------------
 
-% %ECG data
-% load('../data/ECG-data/ECG-data');
-% signal = sig_sample_1';
-% L = length(signal);
-% x = linspace(0,6,L);
+% % Chirp signal
+% signal = chirp(x, 20, 1, 60, 'quadratic');
+
 
 % ---------------------------------
 
@@ -26,9 +25,17 @@ x = linspace(0,6,L);
 
 % ---------------------------------
 
-% 2-mode signal mixing
+% 2-mode signal mixing freq 2Hz and 12Hz
 signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
  sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
+
+% ---------------------------------
+
+% %ECG data
+% load('../data/ECG-data/ECG-data');
+% signal = sig_sample_1';
+% L = length(signal);
+% x = linspace(0,6,L);
 
 % ---------------------------------
 
@@ -37,7 +44,7 @@ signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 % signal = sample;
 % L = length(signal);
 % x = linspace(0, round(L/50), L);
-
+% fs = 50;
 
 % -------------------------------------
 
@@ -71,10 +78,10 @@ signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 
 % load('../data/music-data/bendir');
 % signal = bendir_sample';
+
 % L = length(signal);
 % x = linspace(0, round(L/200), L);
-
-
+% fs = x./L;
 
 k = 1./(4*pi^2);
 T = 20;
@@ -84,6 +91,7 @@ IMF_num = 1;
 [IMFs, residule] = conv_emd(x, signal, k, T, iter_num, IMF_num, 0, 1);
 
 IMF_num = size(IMFs, 1);
+figure;
 subplot(IMF_num+2,1,1);
 plot(x, signal);
 legend('Signal')
@@ -99,6 +107,14 @@ legend('residule')
 
 % plot the Hilbert spectrum
 myIMF = [IMFs; residule];
-[A, ff, tt] = hhspectrum(myIMF,1:size(myIMF,2),2,1);
+% [A, ff, tt] = hhspectrum(myIMF,1:size(myIMF,2),2,1);
+[A, ff, tt] = hhspectrum(myIMF);
 [im, tt, ff] = toimage(A,ff);
-disp_hhs(im, tt);
+disp_hhs(im, tt, -20, fs);
+
+
+% Plot the Short time Fourier Transform
+figure;
+s = spectrogram(signal);
+% spectrogram(signal,'reassigned','yaxis')
+spectrogram(signal,'yaxis');

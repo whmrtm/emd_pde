@@ -1,4 +1,7 @@
 %% sine mixture study regarding alphas and fs
+% The purpose is to research on the separation ability of the PDE-EMD.
+% Given a mixture of two sinusoids, and check whether the algorithm can tell them apart
+
 L = 600;
 x = linspace(0,10,L);
 

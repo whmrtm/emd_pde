@@ -23,7 +23,7 @@
 
 function disp_hhs(varargin)
 
-error(nargchk(1,3,nargin));
+% error(nargchk(1,3,nargin));
 fs = 0;
 inf = -20;
 im = varargin{1};
@@ -79,3 +79,4 @@ end
 set(gca,'YDir','normal')
 xlabel('time')
 title('Hilbert-Huang spectrum')
+colorbar();
