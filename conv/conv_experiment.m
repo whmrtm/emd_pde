@@ -25,9 +25,9 @@ fs = round(L./x(end));
 
 % ---------------------------------
 
-% 2-mode signal mixing freq 2Hz and 12Hz
-signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
- sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
+% % 2-mode signal mixing freq 2Hz and 12Hz
+% signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
+%  sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
 
 % ---------------------------------
 
@@ -76,21 +76,23 @@ signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 % load('../data/music-data/flute');
 % signal = flute_sample';
 
-% load('../data/music-data/bendir');
-% signal = bendir_sample';
+load('../data/music-data/bendir');
+signal = bendir_sample';
 
-% L = length(signal);
-% x = linspace(0, round(L/200), L);
-% fs = x./L;
+L = length(signal);
+x = linspace(0, round(L/200), L);
+fs = x./L;
 
 k = 1./(4*pi^2);
 T = 20;
-iter_num = 100;
-IMF_num = 1;
+iter_num = 200;
+IMF_num = 10;
 
-[IMFs, residule] = conv_emd(x, signal, k, T, iter_num, IMF_num, 0, 1);
+[IMFs, residual] = conv_emd(x, signal, k, T, iter_num, IMF_num, 1, 1, 0.03);
 
 IMF_num = size(IMFs, 1);
+
+% Signal Plot
 figure;
 subplot(IMF_num+2,1,1);
 plot(x, signal);
@@ -101,20 +103,15 @@ for i = 1:IMF_num
 end
 
 subplot(IMF_num+2,1,IMF_num+2);
-plot(x, residule);
-legend('residule')
+plot(x, residual);
+legend('residual')
 
 
-% plot the Hilbert spectrum
-myIMF = [IMFs; residule];
-% [A, ff, tt] = hhspectrum(myIMF,1:size(myIMF,2),2,1);
-[A, ff, tt] = hhspectrum(myIMF);
-[im, tt, ff] = toimage(A,ff);
-disp_hhs(im, tt, -20, fs);
+% Combine IMF and residual
+myIMF = [IMFs; residual];
 
+% Plot Hilbert Spectrums
+plot_hhs(myIMF);
 
-% Plot the Short time Fourier Transform
-figure;
-s = spectrogram(signal);
-% spectrogram(signal,'reassigned','yaxis')
-spectrogram(signal,'yaxis');
+% Plot Fourier Spectrums
+plot_fft(signal);

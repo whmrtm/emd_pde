@@ -73,7 +73,7 @@ end
 if issparse(f) || ~isreal(f) || length(size(f)) > 2
   error('f argument must be a real matrix')
 end
-if any(size(f)~=size(A))
+if any(size(f)~=size(A))  
   error('A and f matrices must have the same size')
 end
 if issparse(t) || ~isreal(t) || ~isvector(t) || length(t)~=size(A,2)
