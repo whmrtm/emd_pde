@@ -17,7 +17,7 @@ function plot_fft(signal)
 
     fftSignal = fft(signal);
     len = floor(length(fftSignal)./2);
-    norm_f = linspace(0, 1, len);
+    norm_f = linspace(0, 0.5, len);
     figure;
     plot(norm_f, abs(fftSignal(1:len)))
     title('Fourier analysis');

@@ -73,11 +73,11 @@ fs = round(L./x(end));
 % load('../data/music-data/oboe');
 % signal = oboe_sample';
 
-% load('../data/music-data/flute');
-% signal = flute_sample';
+load('../data/music-data/flute');
+signal = flute_sample';
 
-load('../data/music-data/bendir');
-signal = bendir_sample';
+% load('../data/music-data/bendir');
+% signal = bendir_sample';
 
 L = length(signal);
 x = linspace(0, round(L/200), L);
@@ -92,19 +92,19 @@ IMF_num = 10;
 
 IMF_num = size(IMFs, 1);
 
-% Signal Plot
-figure;
-subplot(IMF_num+2,1,1);
-plot(x, signal);
-legend('Signal')
-for i = 1:IMF_num
-    subplot(IMF_num+2,1,i+1)
-    plot(x, IMFs(i,:))
-end
+% % Signal Plot
+% figure;
+% subplot(IMF_num+2,1,1);
+% plot(x, signal);
+% legend('Signal')
+% for i = 1:IMF_num
+%     subplot(IMF_num+2,1,i+1)
+%     plot(x, IMFs(i,:))
+% end
 
-subplot(IMF_num+2,1,IMF_num+2);
-plot(x, residual);
-legend('residual')
+% subplot(IMF_num+2,1,IMF_num+2);
+% plot(x, residual);
+% legend('residual')
 
 
 % Combine IMF and residual

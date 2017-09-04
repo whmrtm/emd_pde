@@ -1,7 +1,7 @@
 function plot_hhs(myIMF)
 
     % Short time Hilbert Spectrum
-    [A, ff, tt] = hhspectrum(myIMF, 1:size(myIMF,2), 5);
+    [A, ff, tt] = hhspectrum(myIMF, 1:size(myIMF,2), 2);
     [im, tt] = toimage(A,ff,tt);
     disp_hhs(im, tt, -20);
 

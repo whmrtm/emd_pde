@@ -1,3 +1,4 @@
+
 % Demo of mean envelope extraction
 L = 400;
 x = linspace(0,6,L);
@@ -5,7 +6,7 @@ x = linspace(0,6,L);
 % signal = sin(2*pi.*x) + 0.5.*sin(0.8*pi.*x);
 
 k = 1./(4*pi^2);
-T = 30;
+T = 3000;
 
 
 signal = imread('moon.tif');
@@ -18,6 +19,7 @@ mean_env = conv_mean_env(signal, k, T);
 %     plot(mean_env);
 %     hold on;
 % end
+
 
 
 % plot the result
