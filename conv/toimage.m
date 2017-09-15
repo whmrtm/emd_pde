@@ -29,7 +29,7 @@ function [im,tt,ff] = toimage(A,f,varargin)
 
 DEFSPL = 400;
 
-error(nargchk(2,5,nargin));
+% error(nargchk(2,5,nargin));
 
 switch nargin
   case 2
@@ -73,7 +73,7 @@ end
 if issparse(f) || ~isreal(f) || length(size(f)) > 2
   error('f argument must be a real matrix')
 end
-if any(size(f)~=size(A))  
+if any(size(f)~=size(A))
   error('A and f matrices must have the same size')
 end
 if issparse(t) || ~isreal(t) || ~isvector(t) || length(t)~=size(A,2)
@@ -90,6 +90,7 @@ if any(diff(diff(t))) && splx ~= length(t)
   warning('toimage:nonuniformtimeinsants','When splx differs from length(t), the function only works for equally spaced time instants. You may consider reformating your data (using e.g. interpolation) before using toimage.')
 end
 
+% f \in (0, 0.5)
 f = min(f,0.5);
 f = max(f,0);
 

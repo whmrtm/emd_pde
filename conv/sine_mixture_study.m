@@ -1,12 +1,15 @@
 %% sine mixture study regarding alphas and fs
+% The purpose is to research on the separation ability of the PDE-EMD.
+% Given a mixture of two sinusoids, and check whether the algorithm can tell them apart
+
 L = 600;
 x = linspace(0,10,L);
 
 % define the diffusivity
 k = 1/(4*pi.^2);
 
-T = 30.0;
-max_iter = 150;
+T = 10.0;
+max_iter = 2000;
 % k = 1;
 
 
@@ -27,8 +30,8 @@ for i = 1:100
         [IMFs, residule] = conv_emd(x, signal, k, T, max_iter, 1);
         HFC = IMFs(1,:);
 
-        % pms(i,j) = norm(HFC - s1) ./ norm(s1);
-        pms(i,j) = norm(HFC - s1) ./ norm(s2);
+        pms(i,j) = norm(HFC - s1) ./ norm(s1);
+        % pms(i,j) = norm(HFC - s1) ./ norm(s2);
 
         fprintf('%i,%i\n',i,j);
 

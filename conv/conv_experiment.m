@@ -1,15 +1,17 @@
+%% Experiment on different signals using convolution implementation
+
 L = 400;
 x = linspace(0,6,L);
+fs = round(L./x(end));
 
+% %Three sinusoids
 % signal = 0.5*cos(2*pi*x) + 2*cos(0.1*pi*x) + 0.8*cos(0.5*pi*x);
 
 % ---------------------------------
 
-%ECG data
-load('../data/ECG-data/ECG-data');
-signal = sig_sample_1';
-L = length(signal);
-x = linspace(0,6,L);
+% % Chirp signal
+% signal = chirp(x, 20, 1, 60, 'quadratic');
+
 
 % ---------------------------------
 
@@ -23,9 +25,17 @@ x = linspace(0,6,L);
 
 % ---------------------------------
 
-% % 2-mode signal mixing
+% % 2-mode signal mixing freq 2Hz and 12Hz
 % signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 %  sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
+
+% ---------------------------------
+
+% %ECG data
+% load('../data/ECG-data/ECG-data');
+% signal = sig_sample_1';
+% L = length(signal);
+% x = linspace(0,6,L);
 
 % ---------------------------------
 
@@ -34,7 +44,7 @@ x = linspace(0,6,L);
 % signal = sample;
 % L = length(signal);
 % x = linspace(0, round(L/50), L);
-
+% fs = 50;
 
 % -------------------------------------
 
@@ -63,32 +73,45 @@ x = linspace(0,6,L);
 % load('../data/music-data/oboe');
 % signal = oboe_sample';
 
-% load('../data/music-data/flute');
-% signal = flute_sample';
+load('../data/music-data/flute');
+signal = flute_sample';
 
 % load('../data/music-data/bendir');
 % signal = bendir_sample';
-% L = length(signal);
-% x = linspace(0, round(L/200), L);
 
-
+L = length(signal);
+x = linspace(0, round(L/200), L);
+fs = x./L;
 
 k = 1./(4*pi^2);
 T = 20;
-iter_num = 100;
-IMF_num = 3;
+iter_num = 200;
+IMF_num = 10;
 
-[IMFs, residule] = conv_emd(x, signal, k, T, iter_num, IMF_num);
+[IMFs, residual] = conv_emd(x, signal, k, T, iter_num, IMF_num, 1, 1, 0.03);
 
 IMF_num = size(IMFs, 1);
-subplot(IMF_num+2,1,1);
-plot(x, signal);
-legend('Signal')
-for i = 1:IMF_num
-    subplot(IMF_num+2,1,i+1)
-    plot(x, IMFs(i,:))
-end
 
-subplot(IMF_num+2,1,IMF_num+2);
-plot(x, residule);
-legend('residule')
+% % Signal Plot
+% figure;
+% subplot(IMF_num+2,1,1);
+% plot(x, signal);
+% legend('Signal')
+% for i = 1:IMF_num
+%     subplot(IMF_num+2,1,i+1)
+%     plot(x, IMFs(i,:))
+% end
+
+% subplot(IMF_num+2,1,IMF_num+2);
+% plot(x, residual);
+% legend('residual')
+
+
+% Combine IMF and residual
+myIMF = [IMFs; residual];
+
+% Plot Hilbert Spectrums
+plot_hhs(myIMF);
+
+% Plot Fourier Spectrums
+plot_fft(signal);

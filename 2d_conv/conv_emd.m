@@ -31,33 +31,33 @@
 % Heming Wang 
 % h422wang@uwaterloo.ca
 
-function [IMFs, residual] = conv_emd(x, signal, k, T, iter_num, max_IMF, stop_criterion, k_finding, threshold)
+function [IMFs, residual] = conv_emd(signal, k, T, iter_num, max_IMF, stop_criterion, k_finding, threshold)
 
-    if nargin < 4 or nargin > ９
+    if nargin < 3 or nargin > 8
         disp('Error');
-    elseif nargin < 5
+    elseif nargin < 4
         iter_num = 50;
         max_IMF = 3;
         stop_criterion = 0;
         k_finding = 0;
         threshold = 0.01;
-    elseif nargin < 6
+    elseif nargin < 5
         max_IMF = 3;
         stop_criterion = 0;
         k_finding = 0;
         threshold = 0.01;
-    elseif nargin < 7
+    elseif nargin < 6
         stop_criterion = 0;
         k_finding = 0;
         threshold = 0.01;
-    elseif nargin < 8
+    elseif nargin < 7
         k_finding = 0;
         threshold = 0.01;
-    elseif nargin < 9
+    elseif nargin < 8
         threshold = 0.01;
     end
 
-    L = length(signal);
+    % L = length(signal);
     % k = 1;
     % T = 100;
     % iter_num = 50;
@@ -71,20 +71,20 @@ function [IMFs, residual] = conv_emd(x, signal, k, T, iter_num, max_IMF, stop_cr
 
 
 
-    % Check if there is IMF
-    if stop_criterion == 2
-        [indmin, indmax, indzero] = extr(signal);
-        [mean_env, gau] = conv_mean_env(x, signal, k, T);
-        cond1 = (abs(length(indmin) + length(indmax) - length(indzero)) < 1);
-        % cond2 = ((rms(mean_env)./(rms(signal))).^2 < thres);  
-        cond2 = ((rms(mean_env) / rms(signal)).^2) < threshold;
-        if cond1 && cond2
-            fprintf('No IMF\n');
-            max_IMF = 0;
-            IMFs = [IMFs; zeros(1, length(signal))];
-            residual = signal;
-        end
-    end
+    % % Check if there is IMF
+    % if stop_criterion == 2
+    %     [indmin, indmax, indzero] = extr(signal);
+    %     [mean_env, gau] = conv_mean_env(x, signal, k, T);
+    %     cond1 = (abs(length(indmin) + length(indmax) - length(indzero)) < 1);
+    %     % cond2 = ((rms(mean_env)./(rms(signal))).^2 < thres);  
+    %     cond2 = ((rms(mean_env) / rms(signal)).^2) < threshold;
+    %     if cond1 && cond2
+    %         fprintf('No IMF\n');
+    %         max_IMF = 0;
+    %         IMFs = [IMFs; zeros(1, length(signal))];
+    %         residual = signal;
+    %     end
+    % end
     
     for j = 1:max_IMF
 
@@ -104,14 +104,14 @@ function [IMFs, residual] = conv_emd(x, signal, k, T, iter_num, max_IMF, stop_cr
 
         
         for i = 1:iter_num
-            % fprintf(' %i th iterations\n', i);
-            [mean_env, gau] = conv_mean_env(x, r, k, T);
+            fprintf(' %i th iterations\n', i);
+            mean_env = conv_mean_env(r, k, T);
             IMF = r-mean_env;
 
             % Stop criterion 1
             if stop_criterion == 1 || stop_criterion == 2
                 % mean envelope stop criterion
-                if (rms(mean_env)/rms(r)).^2 < threshold
+                if (rms(mean_env)./rms(r)) < threshold
                     fprintf('Meet mean envelope stop criterion stop\n');
                     break;
                 end
@@ -127,13 +127,13 @@ function [IMFs, residual] = conv_emd(x, signal, k, T, iter_num, max_IMF, stop_cr
         end
 
 
-        IMFs = [IMFs; IMF];
+        IMFs = cat(3,IMFs, IMF);
         curr_signal = curr_signal - IMF;
-        % fprintf('--------------------------\n');
- 
+
+        fprintf('--------------------------\n');
         % IMF stop creterion
-        if rms(IMF) < threshold
-            % fprintf('Meet IMF stop criterion stop\n');
+        if rms(IMF)./rms(signal) < threshold
+            fprintf('Meet IMF stop criterion stop\n');
             break;
         end
 

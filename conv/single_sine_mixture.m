@@ -1,4 +1,4 @@
-%% sine mixture study regarding alphas and fs
+%% sine mixture study regarding single set of params alpha and f
 L = 600;
 x = linspace(0,10,L);
 
@@ -11,8 +11,8 @@ s1 = sin(wave_num.*x);
 T = 10;
 
 
-alpha = 10;
-f = 0.8;
+alpha = 0.1;
+f = 0.95;
 s2 = alpha.*sin(f.*wave_num*x);
 signal = s1 + s2;
 
@@ -32,6 +32,7 @@ hold on;
 plot(x, mean_env);
 plot(x, s1);
 ylabel('signal');
+legend('signal', 'mean_env', 's1');
 
 subplot(312);
 plot(x, HFC);
