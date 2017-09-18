@@ -1,78 +1,72 @@
-
-% % Backward approach
-
-% x = linspace(0, 6, 1000);
-% signal = sin(2*pi*x) + 5*sin(10*pi*x);
-% index(diff(signal, 2) < eps);
-
-% signal_pp = -4*pi^2*sin(2*pi*x) - 500*pi^2*sin(10*pi*x);
-
+L = 400;
+x = linspace(0,6,L);
+fs = round(L./x(end));
+delta_x = 6 ./ L;
+% % Three sinusoids
+signal = 5*cos(2*pi*x) + 20*cos(0.1*pi*x) + 10*cos(0.5*pi*x);
+% signal_pp = -20*pi^2*cos(2*pi*x) - 0.2*pi^2*cos(0.1*pi*x) - 2.5*pi^2*cos(0.5*pi*x);
 
 
-% The iterative sifting process of EMD represented by PDE
-% Author Heming Wang
-
-% Define the mesh in space
-t_0 = 0;
-t_f = 5;
-M = 200;
-N = 400;
-
-dx = 6.0/(N-1);
-x = 0:dx:6;
-x = x';
-
-% define the mesh in time
-dt = (t_f-t_0)/M;
-t = t_0:dt:t_f;
-
-% define the diffusivity
-D = 1/(4*pi.^2);
-% D = 1;
-
-% define the ratio r
-r = D*dt/dx^2 
-
-A = zeros(N,N);
-A(1,1) = 1;
-for j=2:N-1
-  A(j,j-1) = -r/2;
-  A(j,j) = 1+r;
-  A(j,j+1) = -r/2;
-end
-A(end,end) = 1;
-
-% Initial Condition
-fs = 400 ./ 6;
-signal = 0.5*cos(2*pi*x) + 2*cos(0.1*pi*x) + 0.8*cos(0.5*pi*x);
-
-[autocor,lags] = xcorr(signal,6*fs,'coeff');
-
-plot(lags/fs,autocor)
-xlabel('Lag')
-ylabel('Autocorrelation')
+% load('./data/ECG-data/ECG-data');
+% signal = sig_sample_1';
+% L = length(signal);
+% x = linspace(0,6,L);
 
 
-% u = zeros(N, M);
-% residule = signal;
 
-% u = repmat(residule,1,M);
-% RHS = zeros(1,N);
-% for j = 1:M
-%     u_now = u(:,j);
-%     RHS(1) = u_now(1);
-%         for i = 2:N-1
-%             RHS(i) = u_now(i) + r/2*(u_now(i+1)-2*u_now(i)+u_now(i-1));
-%         end
-%     RHS(N) = u_now(N);
-%     u(1:N,j+1) = periodic_tridiag(A,RHS);  
+
+signal_pp = diff(signal, 2) ./ (delta_x)^2;
+new_sig = signal(3:end);
+
+% signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
+%  sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
+
+% Constant parameter
+c = 1./(4*pi^2);
+mean_env = new_sig + c.* signal_pp;
+
+
+
+
+% % Detected Parameter
+% [indmin, indmax, indzero] = extr(signal);
+% min_dist = min(diff(indmax)) * (x(end)./length(x));
+% c = 1./(2*pi./min_dist).^2;
+% mean_env = new_sig + c.* signal_pp;
+
+
+% % piecewise constant
+% indices = inflection(x, signal);
+% indices = [1 indices];
+% mean_env = zeros(1, length(signal));
+% c = zeros(1, length(signal));
+% for i = 1:length(indices)-1
+%     for j = indices(i): indices(i+1)
+%         c(j) = (x(indices(i+1)) - x(indices(i)))^2 ./ pi^2;
+%     end
 % end
+% c = c(2:end-1);
+% mean_env = new_sig + c.* signal_pp;
 
 
-% mean_env = u(:,end);
+% % piecewise constant
+% indices = inflection(x, signal);
+% indices = [1 indices];
+% mean_env = zeros(1, length(signal));
+% c = zeros(1, length(signal));
+% for i = 1:length(indices)-1
+%     for j = indices(i): indices(i+1)
+%         c(j) = (x(indices(i+1)) - x(indices(i)))^2 ./ pi^2;
+%     end
+% end
+% c = c(2:end-1);
+% mean_env = new_sig + c.* signal_pp;
 
-% figure();
-% plot(x, signal);
-% hold on;
-% plot(x, mean_env);
-% legend('signal', 'mean envelope');
+
+% C as a variable
+% what kind of variable?
+
+figure;
+hold on;
+plot(new_sig);
+plot(mean_env);
