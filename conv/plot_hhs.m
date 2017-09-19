@@ -1,9 +1,9 @@
 function plot_hhs(myIMF)
 
     % Short time Hilbert Spectrum
-    [A, ff, tt] = hhspectrum(myIMF, 1:size(myIMF,2), 2);
+    [A, ff, tt] = hhspectrum(myIMF, 1:size(myIMF,2), 1);
     [im, tt] = toimage(A,ff,tt);
-    disp_hhs(im, tt, -20);
+    disp_hhs(im, tt, -15);
 
 
     % Whole Hilbert Spectrum by accumulation
@@ -26,6 +26,7 @@ function plot_hhs(myIMF)
     % h_f_A = h_f_A ./ length(tt);
     figure;
     plot(h_f, h_f_A);
+    xlim([0 0.2])
     xlabel('Normalized Frequency');
     ylabel('Amplitude');
     title('Hilbert Spectrum')

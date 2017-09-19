@@ -1,6 +1,6 @@
 %% Experiment on different signals using convolution implementation
 
-L = 400;
+L = 600;
 x = linspace(0,6,L);
 fs = round(L./x(end));
 
@@ -28,10 +28,15 @@ fs = round(L./x(end));
 % % 2-mode signal mixing freq 2Hz and 12Hz
 % signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 %  sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
+
 % signal = sin(15*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 %  sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
-signal = sin(12*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
- sin(9*pi.*[zeros(1,L/2) x(L/2+1:end)]);
+
+% signal = sin(12*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
+%  sin(9*pi.*[zeros(1,L/2) x(L/2+1:end)]);
+
+signal = 0.6*sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
+ sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
 
 
 % ---------------------------------
@@ -88,28 +93,28 @@ signal = sin(12*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 % x = linspace(0, round(L/200), L);
 % fs = x./L;
 
-k = 1./(4*pi^2);
+k = 1./(24^2*pi^2);
 T = 20;
-iter_num = 200;
+iter_num = 1000;
 IMF_num = 2;
 
-[IMFs, residual] = conv_emd(x, signal, k, T, iter_num, IMF_num, 1, 1, 0.03);
+[IMFs, residual] = conv_emd(x, signal, k, T, iter_num, IMF_num, 0, 1, 0.01);
 
 IMF_num = size(IMFs, 1);
 
-% % Signal Plot
-% figure;
-% subplot(IMF_num+2,1,1);
-% plot(x, signal);
-% legend('Signal')
-% for i = 1:IMF_num
-%     subplot(IMF_num+2,1,i+1)
-%     plot(x, IMFs(i,:))
-% end
+% Signal Plot
+figure;
+subplot(IMF_num+2,1,1);
+plot(x, signal);
+legend('Signal')
+for i = 1:IMF_num
+    subplot(IMF_num+2,1,i+1)
+    plot(x, IMFs(i,:))
+end
 
-% subplot(IMF_num+2,1,IMF_num+2);
-% plot(x, residual);
-% legend('residual')
+subplot(IMF_num+2,1,IMF_num+2);
+plot(x, residual);
+legend('residual')
 
 
 % Combine IMF and residual
@@ -119,4 +124,4 @@ myIMF = [IMFs; residual];
 plot_hhs(myIMF);
 
 % Plot Fourier Spectrums
-plot_fft(signal);
+% plot_fft(signal);
