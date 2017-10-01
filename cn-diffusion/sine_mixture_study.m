@@ -50,7 +50,7 @@ end
 figure;
 mesh(myAlpha, myF, pms);
 set(gca, 'XScale', 'log');
-set(get(gca,'XLabel'),'String','alpha');
+set(get(gca,'XLabel'),'String','\alpha');
 set(get(gca,'YLabel'),'String','f');
 set(get(gca,'ZLabel'),'String','Performance Measure');
 zlim([0,1]);

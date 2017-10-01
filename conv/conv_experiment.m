@@ -105,16 +105,19 @@ IMF_num = size(IMFs, 1);
 % Signal Plot
 figure;
 subplot(IMF_num+2,1,1);
-plot(x, signal);
-legend('Signal')
+plot(x, signal, 'LineWidth', 2);
+lgd1 = legend('signal');
+lgd1.FontSize = 15;
+
 for i = 1:IMF_num
     subplot(IMF_num+2,1,i+1)
-    plot(x, IMFs(i,:))
+    plot(x, IMFs(i,:), 'LineWidth', 2)
 end
 
 subplot(IMF_num+2,1,IMF_num+2);
-plot(x, residual);
-legend('residual')
+plot(x, residual, 'LineWidth', 2);
+lgd2 = legend('residual');
+lgd2.FontSize = 15;
 
 
 % Combine IMF and residual

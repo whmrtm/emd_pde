@@ -3,9 +3,10 @@
 
 % Define the mesh in space
 t_0 = 0;
-t_f = 50;
+t_f = 5;
+
 M = 200;
-N = 400;
+N = 300;
 
 dx = 6.0/(N-1);
 x = 0:dx:6;
@@ -16,8 +17,8 @@ dt = (t_f-t_0)/M;
 t = t_0:dt:t_f;
 
 % define the diffusivity
-% D = 1/(4*pi.^2);
-D = 1;
+D = 1/(4*pi.^2);
+% D = 1;
 
 % define the ratio r
 r = D*dt/dx^2 
@@ -53,7 +54,8 @@ end
 mean_env = u(:,end);
 
 figure();
-plot(x, signal);
+plot(x, signal, '-', 'LineWidth', 4);
 hold on;
-plot(x, mean_env);
-legend('signal', 'mean envelope');
+plot(x, mean_env, '-x', 'LineWidth', 1);
+lgd = legend('signal', 'mean envelope');
+lgd.FontSize = 15;

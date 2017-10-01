@@ -9,7 +9,7 @@ x = linspace(0,10,L);
 k = 1/(4*pi.^2);
 
 T = 10.0;
-max_iter = 2000;
+max_iter = 100;
 % k = 1;
 
 
@@ -27,7 +27,7 @@ for i = 1:100
         f = fs(i);
         s2 = alpha.*sin(f.*wave_num*x);
         signal = s1 + s2;
-        [IMFs, residule] = conv_emd(x, signal, k, T, max_iter, 1);
+        [IMFs, residule] = conv_emd(x, signal, k, T, max_iter, 1, 1, 1);
         HFC = IMFs(1,:);
 
         pms(i,j) = norm(HFC - s1) ./ norm(s1);
@@ -44,7 +44,7 @@ end
 figure;
 mesh(myAlpha, myF, pms);
 set(gca, 'XScale', 'log');
-set(get(gca,'XLabel'),'String','alpha');
+set(get(gca,'XLabel'),'String','\alpha');
 set(get(gca,'YLabel'),'String','f');
 set(get(gca,'ZLabel'),'String','Performance Measure');
 % zlim([0,100]);

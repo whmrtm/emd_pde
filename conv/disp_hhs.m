@@ -64,19 +64,25 @@ end
 M=max(max(im));
 
 warning off
-im = 10*log10(im/M);
+im = 20*log10(im/M);
 warning on
 
+size(t)
+size(im)
 figure
-
 if fs == 0
   imagesc(t,[0,0.5],im,[inf,0]);
-  ylabel('normalized frequency')
+  % imagesc(t,[0,0.5],im);
+  ylabel('normalized frequency');
+  ylim([0,0.2])
 else
-  imagesc(t,[0,0.5*fs],im,[inf,0]);
-  ylabel('frequency')
+  imagesc(t,[0,0.5*fs],im);
+  ylabel('frequency');
 end
 set(gca,'YDir','normal')
+set(gca,'FontSize',15)
+
 xlabel('time')
 title('Hilbert-Huang spectrum')
+% colormap gray;
 colorbar();

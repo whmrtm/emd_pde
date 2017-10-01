@@ -116,11 +116,11 @@ function [IMFs, residual] = conv_emd(x, signal, k, T, iter_num, max_IMF, stop_cr
                     break;
                 end
                 % Extremum stop criterion
-                [indmin, indmax, indzero] = extr(r);
-                if abs(length(indmin) + length(indmax) - length(indzero)) < 1
-                    fprintf('Meet extreme number stop criterion stop\n');
-                    break;
-                end
+                % [indmin, indmax, indzero] = extr(r);
+                % if abs(length(indmin) + length(indmax) - length(indzero)) < 1
+                %     fprintf('Meet extreme number stop criterion stop\n');
+                %     break;
+                % end
             end
 
             r = IMF;

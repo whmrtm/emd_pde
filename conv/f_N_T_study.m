@@ -64,9 +64,9 @@ end
 figure;
 mesh(myN, myT, f0s);
 % set(gca, 'XScale', 'log');
-set(get(gca,'XLabel'),'String','N');
-set(get(gca,'YLabel'),'String','T');
-set(get(gca,'ZLabel'),'String','Cutoff Freq ratio f0');
+set(get(gca,'XLabel'),'String','N','FontSize', 20);
+set(get(gca,'YLabel'),'String','T','FontSize', 20);
+set(get(gca,'ZLabel'),'String','Cutoff Freq ratio f0','FontSize', 20);
 % zlim([0,1]);
 caxis([0,1]);
 
