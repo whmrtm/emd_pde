@@ -14,7 +14,7 @@ dt = (t_f-t_0)/M;
 t = t_0:dt:t_f;
 
 % define the diffusivity
-D = 1/(24^2*pi.^2);
+D = 1/(4*pi.^2);
 
 % define the ratio r
 r = D*dt/dx^2;
@@ -97,19 +97,22 @@ signal = sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 % -------------------------------------
 
 % Music Signal
-% load('../data/music-data/piano_sample');
-% signal = piano_sample';
-% N = length(signal);
-% L = N/50;
-% dx = L/(N-1);
-% x = 0:dx:L;
-% x = x';
-% D = 1/(0.0004*pi.^2);
+load('../data/music-data/piano_sample');
+signal = piano_sample';
+N = length(signal);
+L = N/50;
+dx = L/(N-1);
+x = 0:dx:L;
+x = x';
+D = 1/(0.0004*pi.^2);
 % define the ratio r
 r = D*dt/dx^2;
 
-max_iter = 100;
-IMF_num = 1;
+
+
+max_iter = 50;
+IMF_num = 3;
+
 
 [IMF, residule] = forward_EMD_pde(N, M, r, signal, max_iter, IMF_num);
 HFC = IMF(1,:);
@@ -124,11 +127,11 @@ plot(x, signal);
 ylabel('signal');
 
 subplot(3,1,2);
-plot(x, IMF, '-');
+plot(x, IMF, '-o');
 ylabel('IMF_1');
 
 subplot(3,1,3);
-plot(x, residule, '-');
+plot(x, residule, '-*');
 ylabel('Residule');
 
 
@@ -137,5 +140,3 @@ myIMF = [IMF; residule];
 [A, ff, tt] = hhspectrum(myIMF,1:length(myIMF));
 [im, tt, ff] = toimage(A,ff);
 disp_hhs(im, tt);
-
-
