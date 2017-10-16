@@ -35,7 +35,10 @@ fs = round(L./x(end));
 % signal = sin(12*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 %  sin(9*pi.*[zeros(1,L/2) x(L/2+1:end)]);
 
-signal = 0.6*sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
+% signal = 0.6*sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
+%  sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
+
+signal = 100*sin(12*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
  sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
 
 
@@ -94,8 +97,9 @@ signal = 0.6*sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 % fs = x./L;
 
 k = 1./(24^2*pi^2);
-T = 20;
-iter_num = 1000;
+% T = 20;
+T = 15;
+iter_num = 100;
 IMF_num = 2;
 
 [IMFs, residual] = conv_emd(x, signal, k, T, iter_num, IMF_num, 0, 1, 0.01);

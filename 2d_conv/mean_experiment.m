@@ -1,17 +1,21 @@
 
-% Demo of mean envelope extraction
-L = 400;
-x = linspace(0,6,L);
-
 % signal = sin(2*pi.*x) + 0.5.*sin(0.8*pi.*x);
 
-k = 1./(4*pi^2);
-T = 3000;
+k = 1./2*(pi)^2;
+T = 10;
 
 
-signal = imread('moon.tif');
+signal = imread('./fishingboat.jpg');
+figure;
+mesh(signal)
 mean_env = conv_mean_env(signal, k, T);
+residual = signal - mean_env;
 
+figure;
+mesh(mean_env);
+
+figure;
+mesh(residual);
 % Ts = linspace(0,2,20);
 % for i = 1:20
 %     T = Ts(i);
@@ -22,9 +26,14 @@ mean_env = conv_mean_env(signal, k, T);
 
 
 
-% plot the result
-figure();
-subplot(1,2,1);
-imshow(signal);
-subplot(1,2,2);
-imshow(mean_env);
+% % plot the result
+% figure();
+% subplot(1,3,1);
+% imshow(signal);
+% title('signal')
+% subplot(1,3,2);
+% imshow(mean_env);
+% title('mean surface')
+% subplot(1,3,3);
+% imshow(signal-mean_env);
+% title('residual')

@@ -33,113 +33,104 @@
 
 function [IMFs, residual] = conv_emd(signal, k, T, iter_num, max_IMF, stop_criterion, k_finding, threshold)
 
-    if nargin < 3 or nargin > 8
-        disp('Error');
-    elseif nargin < 4
-        iter_num = 50;
-        max_IMF = 3;
-        stop_criterion = 0;
-        k_finding = 0;
-        threshold = 0.01;
-    elseif nargin < 5
-        max_IMF = 3;
-        stop_criterion = 0;
-        k_finding = 0;
-        threshold = 0.01;
-    elseif nargin < 6
-        stop_criterion = 0;
-        k_finding = 0;
-        threshold = 0.01;
-    elseif nargin < 7
-        k_finding = 0;
-        threshold = 0.01;
-    elseif nargin < 8
-        threshold = 0.01;
-    end
 
-    % L = length(signal);
-    % k = 1;
-    % T = 100;
-    % iter_num = 50;
-    % max_IMF = 3;
-    % thres = 0.01;
+if nargin < 3 or nargin > 8
+    disp('Error');
+elseif nargin < 4
+    iter_num = 50;
+    max_IMF = 3;
+    stop_criterion = 0;
+    k_finding = 1;
+    threshold = 0.01;
+elseif nargin < 5
+    max_IMF = 3;
+    stop_criterion = 0;
+    k_finding = 1;
+    threshold = 0.01;
+elseif nargin < 6
+    stop_criterion = 0;
+    k_finding = 1;
+    threshold = 0.01;
+elseif nargin < 7
+    k_finding = 1;
+    threshold = 0.01;
+elseif nargin < 8
+    threshold = 0.01;
+end
 
 
-    % Initilize
-    IMFs = [];
-    curr_signal = signal;
+% Initilize
+IMFs = [];
+curr_signal = signal;
 
 
 
-    % % Check if there is IMF
-    % if stop_criterion == 2
-    %     [indmin, indmax, indzero] = extr(signal);
-    %     [mean_env, gau] = conv_mean_env(x, signal, k, T);
-    %     cond1 = (abs(length(indmin) + length(indmax) - length(indzero)) < 1);
-    %     % cond2 = ((rms(mean_env)./(rms(signal))).^2 < thres);  
-    %     cond2 = ((rms(mean_env) / rms(signal)).^2) < threshold;
-    %     if cond1 && cond2
-    %         fprintf('No IMF\n');
-    %         max_IMF = 0;
-    %         IMFs = [IMFs; zeros(1, length(signal))];
-    %         residual = signal;
-    %     end
-    % end
-    
-    for j = 1:max_IMF
 
-        % fprintf('Calculating the %i IMF\n', j);
-        r = curr_signal;
+% The significant part of this 2d method is to redefine the IMF 
+% Find some references first
 
-        if k_finding == 1
-            % Find k value for each IMF
-            [indmin, indmax, indzero] = extr(r);
-            min_dist = min(diff(indmax)) * (x(end)./length(x));
-            k = 1./(2*pi./min_dist).^2;
+for j = 1:max_IMF
 
-            if isempty(k)
-                k = 1./(4*pi^2);
-            end
-        end
+    % fprintf('Calculating the %i IMF\n', j);
+    r = curr_signal;
 
+    if k_finding == 1
+        % Find k value for each IMF
+        [zmax,imax,zmin,imin] = extrema2(r);
+        % Use the maximals to estimate k
+        zmax = sort(zmax);
+        % size(zmax)
+        [max_i, max_j] = ind2sub(size(signal), zmax);
+        n = length(max_i);
+        [a,b] = meshgrid(1:n, 1:n);
+        dmat = sqrt((max_i(a)-max_i(b)).^2 + (max_j(a)-max_j(b)).^2);
         
-        for i = 1:iter_num
-            fprintf(' %i th iterations\n', i);
-            mean_env = conv_mean_env(r, k, T);
-            IMF = r-mean_env;
-
-            % Stop criterion 1
-            if stop_criterion == 1 || stop_criterion == 2
-                % mean envelope stop criterion
-                if (rms(mean_env)./rms(r)) < threshold
-                    fprintf('Meet mean envelope stop criterion stop\n');
-                    break;
-                end
-                % Extremum stop criterion
-                [indmin, indmax, indzero] = extr(r);
-                if abs(length(indmin) + length(indmax) - length(indzero)) < 1
-                    fprintf('Meet extreme number stop criterion stop\n');
-                    break;
-                end
-            end
-
-            r = IMF;
-        end
-
-
-        IMFs = cat(3,IMFs, IMF);
-        curr_signal = curr_signal - IMF;
-
-        fprintf('--------------------------\n');
-        % IMF stop creterion
-        if rms(IMF)./rms(signal) < threshold
-            fprintf('Meet IMF stop criterion stop\n');
-            break;
-        end
-
+        dmat(~dmat) = Inf;
+        shortest_dist = min(dmat(:));
+        omega = 2*pi*size(signal,1)./shortest_dist;
+        k = 1./(2*(omega)^2)
     end
 
-    residual = curr_signal;
+    
+    for i = 1:iter_num
+        if mod(iter_num,20) == 0
+            % fprintf(' %i th iterations\n', i);
+        end
+        mean_env = conv_mean_env(r, k, T);
+        IMF = r-mean_env;
+
+        % Stop criterion 1
+        if stop_criterion == 1 || stop_criterion == 2
+            % mean envelope stop criterion
+            if (rms(mean_env)./rms(r)) < threshold
+                fprintf('Meet mean envelope stop criterion stop\n');
+                break;
+            end
+            % % Extremum stop criterion
+            % [indmin, indmax, indzero] = extr(r);
+            % if abs(length(indmin) + length(indmax) - length(indzero)) < 1
+            %     fprintf('Meet extreme number stop criterion stop\n');
+            %     break;
+            % end
+        end
+
+        r = IMF;
+    end
+
+
+    IMFs = cat(3,IMFs, IMF);
+    curr_signal = curr_signal - IMF;
+
+    fprintf('--------------------------\n');
+    % IMF stop creterion
+    % if rms(IMF)./rms(signal) < threshold
+    %     fprintf('Meet IMF stop criterion stop\n');
+    %     break;
+    % end
+
+end
+
+residual = curr_signal;
 
 end
 

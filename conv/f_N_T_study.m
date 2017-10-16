@@ -36,7 +36,7 @@
 
 % Ns = logspace(1, 8, 500);
 Ns = linspace(10, 10000, 500);
-Ts = linspace(0,50,500);
+Ts = linspace(0,30,500);
 
 f0s = zeros(500, 500);
 
@@ -64,9 +64,11 @@ end
 figure;
 mesh(myN, myT, f0s);
 % set(gca, 'XScale', 'log');
-set(get(gca,'XLabel'),'String','N','FontSize', 20);
-set(get(gca,'YLabel'),'String','T','FontSize', 20);
-set(get(gca,'ZLabel'),'String','Cutoff Freq ratio f0','FontSize', 20);
+set(get(gca,'XLabel'),'String','N');
+set(get(gca,'YLabel'),'String','T');
+set(get(gca,'ZLabel'),'String','Cutoff Freq ratio f0');
+set(gca,'FontSize',20);
+
 % zlim([0,1]);
 caxis([0,1]);
 

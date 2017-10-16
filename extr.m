@@ -16,6 +16,7 @@
 % gabriel.rilling@ens-lyon.fr
 function [indmin, indmax, indzer] = extr(x,t);
 
+x = double(x);  
 if(nargin==1)
   t=1:length(x);
 end

@@ -27,11 +27,6 @@
 
 function mean_env = conv_mean_env(signal, k, T)
     sigma = sqrt(2*k*T);
-
-    % c = x(end)/2;
-    % gau = exp(-(x-c) .^ 2 / (2 * sigma ^ 2));
-    % gau = gau./sum(gau);
-    % mean_env = conv(signal, gau,'same');
     mean_env = imgaussfilt(signal, sigma);
     
 end
