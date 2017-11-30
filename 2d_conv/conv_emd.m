@@ -40,19 +40,19 @@ elseif nargin < 4
     iter_num = 50;
     max_IMF = 3;
     stop_criterion = 0;
-    k_finding = 1;
+    k_finding = 0;
     threshold = 0.01;
 elseif nargin < 5
     max_IMF = 3;
     stop_criterion = 0;
-    k_finding = 1;
+    k_finding = 0;
     threshold = 0.01;
 elseif nargin < 6
     stop_criterion = 0;
-    k_finding = 1;
+    k_finding = 0;
     threshold = 0.01;
 elseif nargin < 7
-    k_finding = 1;
+    k_finding = 0;
     threshold = 0.01;
 elseif nargin < 8
     threshold = 0.01;
@@ -77,24 +77,22 @@ for j = 1:max_IMF
     if k_finding == 1
         % Find k value for each IMF
         [zmax,imax,zmin,imin] = extrema2(r);
-        % Use the maximals to estimate k
-        zmax = sort(zmax);
-        % size(zmax)
-        [max_i, max_j] = ind2sub(size(signal), zmax);
+        [max_i, max_j] = ind2sub(size(r), imax);
+
         n = length(max_i);
         [a,b] = meshgrid(1:n, 1:n);
         dmat = sqrt((max_i(a)-max_i(b)).^2 + (max_j(a)-max_j(b)).^2);
-        
         dmat(~dmat) = Inf;
         shortest_dist = min(dmat(:));
-        omega = 2*pi*size(signal,1)./shortest_dist;
-        k = 1./(2*(omega)^2)
+        omega = 2*pi./ (sqrt(2)*size(signal,1)./shortest_dist);
+        k = 1./(2*(omega)^2);
+
     end
 
     
     for i = 1:iter_num
         if mod(iter_num,20) == 0
-            % fprintf(' %i th iterations\n', i);
+            fprintf(' %i th iterations\n', i);
         end
         mean_env = conv_mean_env(r, k, T);
         IMF = r-mean_env;

@@ -1,14 +1,21 @@
-% signal = imread('./lena_gray.tiff');
-% signal = imread('moon.tiff');
-% signal = imread('./lena512color.tiff');
-signal = imread('./fishingboat.jpg');
+% signal = imread('./img/lena_gray.tiff');
+% signal = imread('./img/moon.tiff');
+% signal = imread('./img/lena512color.tiff');
+% signal = imread('./img/fishingboat.jpg');
+% signal = imread('./img/brickwall.bmp');
+signal = imread('./img/CSF.jpg');
+% signal = rgb2gray(signal);
 
-% mesh(signal);
+signal = signal(:,:,1);
+figure;
+imshow(signal);
+title('Signal');
 
-% k = 1./2*(100*pi)^2;
-% T = 20;
-% IMF_num = 5;
-% [IMFs, residual] = conv_emd(signal, k, T, 200, IMF_num, 1, 1,0.001);
+
+k = 1./2*(0.1*pi)^2;
+T = 20;
+IMF_num = 3;
+[IMFs, residual] = conv_emd(signal, k, T, 2, IMF_num, 1, 1, 0.01);
 
 % % Signal Plot
 % figure;
@@ -24,3 +31,11 @@ signal = imread('./fishingboat.jpg');
 % subplot(1,IMF_num+2,IMF_num+2);
 % imshow(residual);
 % title('residual');
+
+for i = 1:IMF_num
+    figure();
+    mesh(IMFs(:,:,i));
+end
+
+figure();
+mesh(residual);

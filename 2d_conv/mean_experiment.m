@@ -1,13 +1,15 @@
+% k = 1./2*(100*pi)^2;
+k = 1./(2*(10*pi)^2);
 
-% signal = sin(2*pi.*x) + 0.5.*sin(0.8*pi.*x);
+T = 1000;
 
-k = 1./2*(pi)^2;
-T = 10;
+signal = imread('./img/wood_texture.jpg');
+% signal = imread('./img/texture_1.jpg');
 
-
-signal = imread('./fishingboat.jpg');
+% signal = rgb2gray(signal);
+signal = signal(:,:,1);
 figure;
-mesh(signal)
+mesh(signal(:,:,1));
 mean_env = conv_mean_env(signal, k, T);
 residual = signal - mean_env;
 
@@ -16,6 +18,7 @@ mesh(mean_env);
 
 figure;
 mesh(residual);
+
 % Ts = linspace(0,2,20);
 % for i = 1:20
 %     T = Ts(i);
@@ -26,7 +29,7 @@ mesh(residual);
 
 
 
-% % plot the result
+% % plot the resul
 % figure();
 % subplot(1,3,1);
 % imshow(signal);

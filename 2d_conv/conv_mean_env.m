@@ -28,5 +28,4 @@
 function mean_env = conv_mean_env(signal, k, T)
     sigma = sqrt(2*k*T);
     mean_env = imgaussfilt(signal, sigma);
-    
 end
