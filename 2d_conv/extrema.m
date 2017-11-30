@@ -87,21 +87,21 @@ imin = a(imin);
 nmaxi = length(imax);
 nmini = length(imin);                
 
-% % Maximum or minumim on a flat peak at the ends?
-% if (nmaxi==0) && (nmini==0)
-%  if x(1) > x(Nt)
-%   xmax = x(1);
-%   imax = indx(1);
-%   xmin = x(Nt);
-%   imin = indx(Nt);
-%  elseif x(1) < x(Nt)
-%   xmax = x(Nt);
-%   imax = indx(Nt);
-%   xmin = x(1);
-%   imin = indx(1);
-%  end
-%  return
-% end
+% Maximum or minumim on a flat peak at the ends?
+if (nmaxi==0) && (nmini==0)
+ if x(1) > x(Nt)
+  xmax = x(1);
+  imax = indx(1);
+  xmin = x(Nt);
+  imin = indx(Nt);
+ elseif x(1) < x(Nt)
+  xmax = x(Nt);
+  imax = indx(Nt);
+  xmin = x(1);
+  imin = indx(1);
+ end
+ return
+end
 
 % % Maximum or minumim at the ends?
 % if (nmaxi==0) 

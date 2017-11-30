@@ -83,24 +83,24 @@ sminfil = sub2ind([M,N],im(sminfil(:,2)),sminfil(:,1));
 smax = intersect(smaxcol,smaxfil);
 smin = intersect(smincol,sminfil);
 
-% Search peaks through diagonals?
-if nargin==1
- % Check peaks on down-up diagonal:
- [iext,jext] = ind2sub([M,N],unique([smax;smin]));
- [sextmax,sextmin] = extremos_diag(iext,jext,xy,1);
+% % % Search peaks through diagonals?
+% if nargin==1
+%  % Check peaks on down-up diagonal:
+%  [iext,jext] = ind2sub([M,N],unique([smax;smin]));
+%  [sextmax,sextmin] = extremos_diag(iext,jext,xy,1);
 
- % Check peaks on up-down diagonal:
- smax = intersect(smax,[M; (N*M-M); sextmax]);
- smin = intersect(smin,[M; (N*M-M); sextmin]);
+%  % Check peaks on up-down diagonal:
+%  smax = intersect(smax,[M; (N*M-M); sextmax]);
+%  smin = intersect(smin,[M; (N*M-M); sextmin]);
 
- % Peaks on up-down diagonals:
- [iext,jext] = ind2sub([M,N],unique([smax;smin]));
- [sextmax,sextmin] = extremos_diag(iext,jext,xy,-1);
+%  % Peaks on up-down diagonals:
+%  [iext,jext] = ind2sub([M,N],unique([smax;smin]));
+%  [sextmax,sextmin] = extremos_diag(iext,jext,xy,-1);
 
- % Peaks on columns, rows and diagonals:
- smax = intersect(smax,[1; N*M; sextmax]);
- smin = intersect(smin,[1; N*M; sextmin]);
-end
+%  % Peaks on columns, rows and diagonals:
+%  smax = intersect(smax,[1; N*M; sextmax]);
+%  smin = intersect(smin,[1; N*M; sextmin]);
+% end
 
 % Extrema points:
 xymax = xy(smax);
