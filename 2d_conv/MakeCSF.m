@@ -18,8 +18,30 @@ sz = [800,800];  %size of image [y,x], in pixels
 img = sin(exp(x)).*(y.^3);
 img = (img+1)*128;
 
-figure(1)
+figure()
 clf
 image(img);
 colormap(gray(256));
 axis equal; axis tight; axis off
+
+
+k = 1./2*(0.1*pi)^2;
+T = 20;
+IMF_num = 2;
+[IMFs, residual] = conv_emd(img, k, T, 2, IMF_num, 1, 1, 0.01);
+
+
+for i = 1:IMF_num
+    figure();
+    % imshow(IMFs(:,:,i));
+    mesh(IMFs(:,:,i));
+    colormap(gray(256));
+    axis equal; axis tight; axis off
+end
+
+figure();
+% imshow(IMFs(:,:,i));
+mesh(residual);
+colormap(gray(256));
+axis equal; axis tight; axis off
+

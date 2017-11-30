@@ -30,9 +30,17 @@ n = length(max_i);
 dmat = sqrt((max_i(a)-max_i(b)).^2 + (max_j(a)-max_j(b)).^2);
 
 dmat(~dmat) = Inf;
-shortest_dist = min(dmat(:))
-omega = 2*pi./ (sqrt(2)*size(signal,1)./shortest_dist)
-k = 1./(2*(omega)^2)
+[shortest_dist, ind] = min(dmat(:));
+[I_A, I_B] = ind2sub(size(dmat),ind);
+
+scatter3(max_j(I_A),max_i(I_A),zmax(I_A),'filled','r');
+scatter3(max_j(I_B),max_i(I_B),zmax(I_B),'filled','r');
+
+
+% omega = 2*pi./ (sqrt(2)*size(signal,1)./shortest_dist)
+omega1 = 2*pi*(size(signal,1)./shortest_dist_x)
+omega2 = 2*pi*(size(signal,1)./shortest_dist_y)
+k = 1./(omega1^2 + omega2^2)
 
 
 figure;
