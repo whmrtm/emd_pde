@@ -76,22 +76,36 @@ for j = 1:max_IMF
 
     if k_finding == 1
         % Find k value for each IMF
-        [zmax,imax,zmin,imin] = extrema2(r);
-        [max_i, max_j] = ind2sub(size(r), imax);
+        [zmax,imax,zmin,imin] = extrema2(signal);
+        [max_i, max_j] = ind2sub(size(signal), imax);
+        [min_i, min_j] = ind2sub(size(signal), imin);
 
-        n = length(max_i);
-        [a,b] = meshgrid(1:n, 1:n);
-        dmat = sqrt((max_i(a)-max_i(b)).^2 + (max_j(a)-max_j(b)).^2);
+        n = length(max_i); m = length(min_i);
+        [a,b] = meshgrid(1:n, 1:m);
+        dmat = sqrt((max_i(a)-min_i(b)).^2 + (max_j(a)-min_j(b)).^2);
         dmat(~dmat) = Inf;
-        shortest_dist = min(dmat(:));
-        omega = 2*pi./ (sqrt(2)*size(signal,1)./shortest_dist);
-        k = 1./(2*(omega)^2);
+        [shortest_dist, ind] = min(dmat(:));
+        [I_A, I_B] = ind2sub(size(dmat),ind);
+        shortest_dist_y = abs(max_i(I_B)-min_i(I_A));
+        shortest_dist_x = abs(max_j(I_B)-min_j(I_A));
+        if shortest_dist_x == 0
+            omega1 = 0;
+        else
+            omega1 = pi./(2*shortest_dist_x);
+        end
+
+        if shortest_dist_y == 0
+            omega2 = 0;
+        else
+            omega2 = pi./(2*shortest_dist_y);
+        end
+        k = 1./(omega1^2 + omega2^2)
 
     end
 
     
     for i = 1:iter_num
-        if mod(iter_num,20) == 0
+        if mod(i,20) == 0
             fprintf(' %i th iterations\n', i);
         end
         mean_env = conv_mean_env(r, k, T);

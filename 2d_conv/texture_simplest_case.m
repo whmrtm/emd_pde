@@ -1,57 +1,51 @@
 % Generate the signal
-img_size = 32;
-omega = 0.25*pi;
+img_size = 128;
+omega = 0.1*pi;
+
+
 [X,Y] = meshgrid(1:img_size);
 % Z = sin(omega.*X).*sin(omega.*Y);
-Z = sin(omega.*X + omega.*Y);
+Z = sin(omega.*X + omega.*Y) + sin(-17*omega.*X + 7*omega.*Y);
+
+
+% Convert to 255 scale
 Z = (Z+1)./2;
-% Z = mat2gray(Z);
-% figure;
-% mesh(X,Y,Z);
-% figure;
+signal = Z*255;
 
-% imshow(Z, []);
-
-signal = Z;
-
+k = 1./2*(0.1*pi)^2;
+T = 20;
+IMF_num = 1;
+iter_num = 100;
+[IMFs, residual] = conv_emd(signal, k, T, iter_num, IMF_num, 1, 1, 0.01);
 
 figure;
-mesh(signal);
-[zmax,imax,zmin,imin] = extrema2(signal);
-[max_i, max_j] = ind2sub(size(signal), imax);
-[min_i, min_j] = ind2sub(size(signal), imin);
-hold on;
-scatter3(max_j,max_i,zmax,'filled');
-scatter3(min_j,min_i,zmin,'filled');
+subplot(121)
+image(signal);
+colormap(gray(256));
+subplot(122)
+F = fft2(signal);
+imagesc(log(abs(fftshift(F))));
+suptitle('Signal');
 
-n = length(max_i);
-m = length(min_i);
-[a,b] = meshgrid(1:n, 1:m);
-dmat = sqrt((max_i(a)-min_i(b)).^2 + (max_j(a)-min_j(b)).^2);
+for i = 1:IMF_num
+    figure();
+    subplot(121);
+    image(IMFs(:,:,i));
+    colormap(gray(256));
+    subplot(122);
+    F = fft2(IMFs(:,:,i));
+    imagesc(log(abs(fftshift(F))));
+    % mesh(IMFs(:,:,i));    
+    suptitle(sprintf('IMF %d', i))
 
-dmat(~dmat) = Inf;
-[shortest_dist, ind] = min(dmat(:));
-[I_A, I_B] = ind2sub(size(dmat),ind);
+end
 
-scatter3(max_j(I_B),max_i(I_B),zmax(I_B),'filled','g');
-scatter3(min_j(I_A),min_i(I_A),zmin(I_A),'filled','g');
-
-shortest_dist_y = max_i(I_B)-min_i(I_A);
-shortest_dist_x = max_j(I_B)-min_j(I_A);
-% omega = 2*pi./ (sqrt(2)*size(signal,1)./shortest_dist)
-omega1 = pi./shortest_dist_x;
-omega2 = pi./shortest_dist_y;
-k = 1./(omega1^2 + omega2^2)
-
-
-% k = 1./(2*(omega)^2);
-T = 50;
-mean_env = conv_mean_env(signal, k, T);
-residual = signal - mean_env;
-
-
-figure;
-mesh(mean_env);
-
-figure;
-mesh(residual);
+figure();
+subplot(121)
+image(residual);
+colormap(gray(256));
+subplot(122)
+F = fft2(residual);
+imagesc(log(abs(fftshift(F))));
+% mesh(residual);
+suptitle('Residual')
