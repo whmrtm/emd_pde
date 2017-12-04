@@ -1,8 +1,9 @@
 % signal = imread('./img/lena_gray.tiff');
 % signal = imread('./img/moon.tiff');
 % signal = imread('./img/lena512color.tiff');
-signal = imread('./img/fishingboat.jpg');
+% signal = imread('./img/fishingboat.jpg');
 % signal = imread('./img/brickwall.bmp');
+signal = imread('./img/wood_texture.jpg');
 % signal = imread('./img/CSF.jpg');
 % signal = rgb2gray(signal);
 
@@ -12,7 +13,7 @@ signal = signal(:,:,1);
 k = 1./2*(0.1*pi)^2;
 T = 50;
 IMF_num = 3;
-iter_num = 200;
+iter_num = 20;
 [IMFs, residual] = conv_emd(signal, k, T, iter_num, IMF_num, 1, 1, 0.01);
 
 % Display the data

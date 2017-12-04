@@ -1,15 +1,5 @@
-%MakeCSF.m
-%
-%Matlab code to generate the classic contrast sensitivity figure in which
-%spatial frequency increases (exponentially) from left to right. 
-%Contrast increases from top to bottom. The boundary between the invisible and 
-%visible gratings is shaped like the human CSF (contrast sensitivity function).
-%
-%Note, however, that the apparent contrast of the bottom of the image (high
-%contrast) appears roughly equal across spatial frequencies - a
-%demonstration of 'contrast constancy'.
-%
-%Written by G.M. Boynton, August 2005
+
+% classic contrast sensitivity
 
 sz = [800,800];  %size of image [y,x], in pixels
 
