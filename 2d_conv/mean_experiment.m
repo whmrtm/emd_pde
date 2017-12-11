@@ -1,9 +1,9 @@
 % k = 1./2*(100*pi)^2;
-k = 1./(2*(10*pi)^2);
+k = 1./((0.2*pi)^2);
 
-T = 1000;
+T = 20;
 
-signal = imread('./img/wood_texture.jpg');
+signal = imread('./img/fishingboat.jpg');
 % signal = imread('./img/texture_1.jpg');
 
 % signal = rgb2gray(signal);

@@ -1,6 +1,6 @@
 % Generate the signal
-img_size = 64;
-omega = 0.1*pi;
+img_size = 32;
+omega = 0.2*pi;
 
 
 [X,Y] = meshgrid(1:img_size);
@@ -16,12 +16,13 @@ k = 1./2*(0.1*pi)^2;
 T = 20;
 IMF_num = 1;
 iter_num = 100;
-[IMFs, residual] = conv_emd(signal, k, T, iter_num, IMF_num, 1, 1, 0.01);
+[IMFs, residual] = pde_emd(signal, k, T, iter_num, IMF_num, 0, 0, 0.01);
 
 
 % Window
 w = hamming(size(signal, 1));
-log_scale = 1;
+log_scale = 0;
+
 figure;
 subplot(121)
 image(signal);

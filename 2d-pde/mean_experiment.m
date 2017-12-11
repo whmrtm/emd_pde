@@ -14,10 +14,9 @@ signal = Z*255;
 
 k = 1./2*(0.1*pi)^2;
 T = 20;
-IMF_num = 1;
-iter_num = 100;
-[IMFs, residual] = conv_emd(signal, k, T, iter_num, IMF_num, 1, 1, 0.01);
 
+mean_env = mean_envelope(signal, k, T);
+residual = signal - mean_env;
 
 % Window
 w = hamming(size(signal, 1));
@@ -37,23 +36,20 @@ else
 end
 % subtitle('Signal');
 
-for i = 1:IMF_num
-    figure();
-    subplot(121);
-    image(IMFs(:,:,i));
-    colormap(gray(256));
-    subplot(122);
-    F = fft2(IMFs(:,:,i).*(w*w'));
-    % F = fft2(signal);
-    if log_scale
-        imagesc(log(abs(fftshift(F))));
-    else
-        imagesc(abs(fftshift(F)));
-    end
-    % mesh(IMFs(:,:,i));    
-    % subtitle(sprintf('IMF %d', i))
-
+figure();
+subplot(121);
+image(mean_env);
+colormap(gray(256));
+subplot(122);
+F = fft2(mean_env.*(w*w'));
+% F = fft2(signal);
+if log_scale
+    imagesc(log(abs(fftshift(F))));
+else
+    imagesc(abs(fftshift(F)));
 end
+% mesh(IMFs(:,:,i));    
+% subtitle(sprintf('IMF %d', i))
 
 figure();
 subplot(121)    

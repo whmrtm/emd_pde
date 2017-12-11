@@ -1,7 +1,7 @@
 
 % Implement forward-EMD by convolution with Gaussian  
 % 
-% function [IMFs, residual] = conv_emd(x, signal, k, T, iter_num, max_IMF, stop_criterion, k_finding, threshold)
+% function [IMFs, residual] = pde_emd(x, signal, k, T, iter_num, max_IMF, stop_criterion, k_finding, threshold)
 %
 % inputs:
 %   - x   : x indexes of Signal
@@ -31,7 +31,7 @@
 % Heming Wang 
 % h422wang@uwaterloo.ca
 
-function [IMFs, residual] = conv_emd(signal, k, T, iter_num, max_IMF, stop_criterion, k_finding, threshold)
+function [IMFs, residual] = pde_emd(signal, k, T, iter_num, max_IMF, stop_criterion, k_finding, threshold)
 
 
 if nargin < 3 or nargin > 8
@@ -112,7 +112,7 @@ for j = 1:max_IMF
         if mod(i,20) == 0
             fprintf(' %i th iterations\n', i);
         end
-        mean_env = conv_mean_env(r, k, T);
+        mean_env = mean_envelope(r, k, T);
         IMF = r-mean_env;
 
         % Stop criterion 1

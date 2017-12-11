@@ -1,6 +1,6 @@
 % Generate the signal
-img_size = 64;
-omega = 0.1*pi;
+img_size = 32;
+omega = 0.2*pi;
 
 
 [X,Y] = meshgrid(1:img_size);

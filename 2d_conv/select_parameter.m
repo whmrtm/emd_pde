@@ -1,18 +1,21 @@
-% Generate the signal
-img_size = 32;
-omega = 0.25*pi;
-[X,Y] = meshgrid(1:img_size);
-% Z = sin(omega.*X).*sin(omega.*Y);
-Z = sin(omega.*X + omega.*Y);
-Z = (Z+1)./2;
-% Z = mat2gray(Z);
-% figure;
-% mesh(X,Y,Z);
-% figure;
 
-% imshow(Z, []);
+% Read Signal from images
+signal = imread('./img/fishingboat.jpg');
+% signal = imread('./img/brickwall.bmp');
+% signal = imread('./img/wood_texture.jpg');
+% signal = imread('./img/CSF.jpg');
+% signal = rgb2gray(signal);
+signal = signal(:,:,1);
 
-signal = Z;
+% % Generate the sinusoid spatial signal
+% img_size = 32;
+% omega = 0.25*pi;
+% [X,Y] = meshgrid(1:img_size);
+% % Z = sin(omega.*X).*sin(omega.*Y);
+% Z = sin(omega.*X + omega.*Y);
+% Z = (Z+1)./2;
+% % Z = mat2gray(Z);
+% signal = Z;
 
 
 figure;
@@ -38,14 +41,18 @@ scatter3(min_j(I_A),min_i(I_A),zmin(I_A),'filled','g');
 
 shortest_dist_y = abs(max_i(I_B)-min_i(I_A))
 shortest_dist_x = abs(max_j(I_B)-min_j(I_A))
-% omega = 2*pi./ (sqrt(2)*size(signal,1)./shortest_dist)
-omega1 = pi./(2*shortest_dist_x)
-omega2 = pi./(2*shortest_dist_y)
-k = 1./(omega1^2 + omega2^2)
-
-
-% k = 1./(2*(omega)^2);
-T = 50;
+if shortest_dist_x == 0
+    omega = pi ./ shortest_dist_y;
+elseif shortest_dist_y == 0
+    omega = pi ./ shortest_dist_x;
+else
+    omega1 = pi./(shortest_dist_x);
+    omega2 = pi./(shortest_dist_y);
+    omega = sqrt(omega1.^2 + omega2.^2);
+end
+% k = 1./(omega1^2 + omega2^2)
+k = 1./((omega)^2)
+T = 20;
 mean_env = conv_mean_env(signal, k, T);
 residual = signal - mean_env;
 
