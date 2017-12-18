@@ -11,7 +11,7 @@
 %   - iter_num : max number iterations for each sifting process, dafault 50
 %   - max_IMF : Max number of IMF to find, default 3
 %   - stop_criterion : stop criterion, default to be 0.
-%   - k_finding : Determine how to find the parameter k, default to be 0.
+%   - k_finding : Determine how to find the parameter k, default to be 0, 1 is auto-selection, 2 is given a group of ks.
 %   - threshold : Threshold value used to determine stop criterion.
 %
 % outputs:
@@ -64,6 +64,9 @@ IMFs = [];
 curr_signal = signal;
 
 
+% if k_finding == 2
+%     ks = k;
+% end
 
 
 % The significant part of this 2d method is to redefine the IMF 
@@ -107,7 +110,9 @@ for j = 1:max_IMF
 
     end
 
-    
+    if k_finding == 2
+        k = k*4;
+    end
     for i = 1:iter_num
         if mod(i,20) == 0
             fprintf(' %i th iterations\n', i);

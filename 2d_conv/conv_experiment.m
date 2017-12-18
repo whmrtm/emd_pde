@@ -9,19 +9,19 @@ signal = imread('./img/lena512color.tiff');
 
 signal = signal(:,:,1);
 
-
-k = 1./(0.2*pi)^2;
-T = 20;
-IMF_num = 2;
+k = 1./(pi)^2;
+% k = [1./(0.2*pi)^2, 1./(0.4*pi)^2, 1./(0.8*pi)^2];
+T = 10; 
+IMF_num = 4;
 iter_num = 100;
 signal = double(signal);
-[IMFs, residual] = conv_emd(signal, k, T, iter_num, IMF_num, 0, 0, 0.01);
+[IMFs, residual] = conv_emd(signal, k, T, iter_num, IMF_num, 0, 2, 0.01);
 
 % Display the data
 % Window
 w = hamming(size(signal, 1));
 signal = double(signal);
-log_scale = 1;
+log_scale = 0;
 figure;
 subplot(121)
 image(signal);
@@ -34,13 +34,13 @@ if log_scale
 else
     imagesc(abs(fftshift(F)));
 end
-% suptitle('Signal');
+suptitle('Signal');
 
 for i = 1:IMF_num
     figure();
     subplot(121);
-    % image(IMFs(:,:,i)+126);
-    mesh(IMFs(:,:,i));
+    image(IMFs(:,:,i)+126);
+    % mesh(IMFs(:,:,i));
     colormap(gray(256));
     subplot(122);
     F = fft2(IMFs(:,:,i).*(w*w'));
@@ -55,8 +55,8 @@ end
 
 figure();
 subplot(121)    
-% image(residual);
-mesh(residual);
+image(residual);
+% mesh(residual);
 colormap(gray(256));
 subplot(122)
 F = fft2(residual.*(w*w'));
@@ -65,4 +65,4 @@ if log_scale
 else
     imagesc(abs(fftshift(F)));
 end
-suptitle('Residual')
+% suptitle('Residual')

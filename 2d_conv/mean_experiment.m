@@ -1,23 +1,42 @@
 % k = 1./2*(100*pi)^2;
-k = 1./((0.2*pi)^2);
 
-T = 20;
+k = 1./((pi)^2);
+T = 100;
 
 signal = imread('./img/fishingboat.jpg');
 % signal = imread('./img/texture_1.jpg');
 
 % signal = rgb2gray(signal);
-signal = signal(:,:,1);
+signal = double(signal(:,:,1));
 figure;
-mesh(signal(:,:,1));
+mesh(signal);
+% image(signal)
+% colormap(gray(256));
+
 mean_env = conv_mean_env(signal, k, T);
-residual = signal - mean_env;
 
 figure;
 mesh(mean_env);
+% image(mean_env)
+% colormap(gray(256));
 
+residual = signal - mean_env;
 figure;
 mesh(residual);
+% image(residual)
+% colormap(gray(256));
+
+
+
+
+
+
+
+
+
+
+
+
 
 % Ts = linspace(0,2,20);
 % for i = 1:20
@@ -29,7 +48,7 @@ mesh(residual);
 
 
 
-% % plot the resul
+% % plot the result
 % figure();
 % subplot(1,3,1);
 % imshow(signal);
