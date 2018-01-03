@@ -1,7 +1,8 @@
-% k = 1./2*(100*pi)^2;
 
-k = 1./((pi)^2);
-T = 100;
+
+% k = 1./2*(100*pi)^2;
+k = 1./((0.5*pi)^2);
+T = 50;
 
 signal = imread('./img/fishingboat.jpg');
 % signal = imread('./img/texture_1.jpg');
@@ -9,22 +10,27 @@ signal = imread('./img/fishingboat.jpg');
 % signal = rgb2gray(signal);
 signal = double(signal(:,:,1));
 figure;
-mesh(signal);
-% image(signal)
-% colormap(gray(256));
+% mesh(signal);
+image(signal);
+colormap(gray(256));
+title('Signal');
 
+% Calculate the mean envelope
 mean_env = conv_mean_env(signal, k, T);
-
 figure;
-mesh(mean_env);
-% image(mean_env)
-% colormap(gray(256));
+% mesh(mean_env);
+image(mean_env);
+colormap(gray(256));
+title('Mean Surface');
 
+
+% Calculate the residual
 residual = signal - mean_env;
 figure;
-mesh(residual);
-% image(residual)
-% colormap(gray(256));
+% mesh(residual);
+image(residual)
+colormap(gray(256));
+title('Residule');
 
 
 

@@ -15,7 +15,7 @@ T = 10;
 IMF_num = 4;
 iter_num = 100;
 signal = double(signal);
-[IMFs, residual] = conv_emd(signal, k, T, iter_num, IMF_num, 0, 2, 0.01);
+[IMFs, residual] = conv_emd(signal, k, T, iter_num, IMF_num, 1, 2, 0.01);
 
 % Display the data
 % Window
@@ -34,7 +34,7 @@ if log_scale
 else
     imagesc(abs(fftshift(F)));
 end
-suptitle('Signal');
+% suptitle('Signal');
 
 for i = 1:IMF_num
     figure();
@@ -49,7 +49,7 @@ for i = 1:IMF_num
     else
         imagesc(abs(fftshift(F)));
     end
-    suptitle(sprintf('IMF %d', i))
+    % suptitle(sprintf('IMF %d', i))
 
 end
 
