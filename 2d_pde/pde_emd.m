@@ -109,9 +109,9 @@ for j = 1:max_IMF
 
     
     for i = 1:iter_num
-        if mod(i,20) == 0
-            fprintf(' %i th iterations\n', i);
-        end
+%         if mod(i,20) == 0
+%             fprintf(' %i th iterations\n', i);
+%         end
         mean_env = mean_envelope(r, k, T);
         IMF = r-mean_env;
 
@@ -137,7 +137,7 @@ for j = 1:max_IMF
     IMFs = cat(3,IMFs, IMF);
     curr_signal = curr_signal - IMF;
 
-    fprintf('--------------------------\n');
+%     fprintf('--------------------------\n');
     % IMF stop creterion
     % if rms(IMF)./rms(signal) < threshold
     %     fprintf('Meet IMF stop criterion stop\n');

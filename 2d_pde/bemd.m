@@ -4,7 +4,7 @@ function [ imf_matrix ] = bemd( input_image, imf_num, iter_num)
 % BEMD This program calculates the Bidimensional EMD of a 2-d signal using
 % the process of sifting. It is dependent on the function SIFT.
 
-tic
+% tic
 
 % Make a 'double' copy of the image
 
@@ -30,7 +30,7 @@ imf_matrix(:,:,k) = residue_temp;
 
 % End of BEMD Computation
 
-toc
+% toc
 
 end
 
