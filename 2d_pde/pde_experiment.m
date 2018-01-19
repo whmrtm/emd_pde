@@ -1,78 +1,24 @@
-%%
-% % Generate the signal
-img_size = 128;
-omega = 0.05*pi;
-% 
-% 
-[X,Y] = meshgrid(1:img_size);
-Z = sin(omega.*X).*sin(omega.*Y) + sin(5*omega.*X).*sin(10*omega.*Y) + sin(10*omega.*X).*sin(5*omega.*Y);
-% Z = sin(omega.*X + omega.*Y) + sin(-4*omega.*X + 8*omega.*Y);
-% 
-% 
-% Convert to 255 scale
-Z = (Z+1)./2;
-signal = Z*255;
 
-
+% signal = imread('./img/lena_gray.tiff');
+% signal = imread('./img/moon.tiff');
+signal = imread('./img/lena512color.tiff');
 % signal = imread('./img/fishingboat.jpg');
-% signal = double(signal(:,:,1));
+% signal = imread('./img/brickwall.bmp');
+% signal = imread('./img/texture85.gif');
+% signal = imread('./img/CSF.jpg');
+% signal = imread('./img/Raffia.tiff');
+% signal = rgb2gray(signal);
 
-%%
-k = 1./2*(0.1*pi)^2;
-T = 20;
-IMF_num = 3;
-iter_num = 100;
-[IMFs, residual] = pde_emd(signal, k, T, iter_num, IMF_num, 0, 1, 0.01);
+signal = signal(:,:,1);
+
+k = 1./(pi)^2;
+% k = [1./(0.2*pi)^2, 1./(0.4*pi)^2, 1./(0.8*pi)^2];
+T = 20; 
+IMF_num = 1;
+iter_num = 10;
+signal = double(signal);
+
+[IMFs, residual] = pde_emd(signal, k, T, iter_num, IMF_num, 1, 1, 0.01);
 
 
-% Window
-w = hamming(size(signal, 1));
-log_scale = 0;
-
-figure;
-subplot(121)
-image(signal);
-colormap(gray(256));
-subplot(122)
-F = fft2(signal.*(w*w'));
-% F = fft2(signal);
-
-if log_scale
-    imagesc(log(abs(fftshift(F))));
-else
-    imagesc(abs(fftshift(F)));
-end
-% subtitle('Signal');
-
-for i = 1:IMF_num
-    figure();
-    subplot(121);
-    image(IMFs(:,:,i));
-    colormap(gray(256));
-    subplot(122);
-    F = fft2(IMFs(:,:,i).*(w*w'));
-    % F = fft2(signal);
-    if log_scale
-        imagesc(log(abs(fftshift(F))));
-    else
-        imagesc(abs(fftshift(F)));
-    end
-    % mesh(IMFs(:,:,i));    
-    % subtitle(sprintf('IMF %d', i))
-
-end
-
-figure();
-subplot(121)    
-image(residual);
-colormap(gray(256));
-subplot(122)
-F = fft2(residual.*(w*w'));
-% F = fft2(signal);
-if log_scale
-    imagesc(log(abs(fftshift(F))));
-else
-    imagesc(abs(fftshift(F)));
-end
-% mesh(residual);
-% subtitle('Residual')
+plot_EMD(signal, IMFs, residual);

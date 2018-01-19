@@ -1,7 +1,7 @@
 
 % Implement forward-EMD by convolution with Gaussian  
 % 
-% function [IMFs, residual] = pde_emd(x, signal, k, T, iter_num, max_IMF, stop_criterion, k_finding, threshold)
+% function [IMFs, residual] = conv_emd(x, signal, k, T, iter_num, max_IMF, stop_criterion, k_finding, threshold)
 %
 % inputs:
 %   - x   : x indexes of Signal
@@ -11,7 +11,7 @@
 %   - iter_num : max number iterations for each sifting process, dafault 50
 %   - max_IMF : Max number of IMF to find, default 3
 %   - stop_criterion : stop criterion, default to be 0.
-%   - k_finding : Determine how to find the parameter k, default to be 0.
+%   - k_finding : Determine how to find the parameter k, default to be 0, 1 is auto-selection, 2 is given a group of ks.
 %   - threshold : Threshold value used to determine stop criterion.
 %
 % outputs:
@@ -107,14 +107,22 @@ for j = 1:max_IMF
 
     end
 
-    
-    for i = 1:iter_num
-%         if mod(i,20) == 0
-%             fprintf(' %i th iterations\n', i);
-%         end
-        mean_env = mean_envelope(r, k, T);
-        IMF = r-mean_env;
+    if k_finding == 2
+        k = k*4;
+    end
 
+    for i = 1:iter_num
+        if mod(i,1) == 0
+            fprintf(' %i th iterations\n', i);
+        end
+        r(1,1)
+        mean_env = mean_envelope(r, k, T);
+        mean_env(1,1)
+        if sum(sum(isnan(mean_env))) ~= 0
+            error 'NaN encountered';
+        end
+        IMF = r-mean_env;
+        IMF(1,1)
         % Stop criterion 1
         if stop_criterion == 1 || stop_criterion == 2
             % mean envelope stop criterion
@@ -133,11 +141,10 @@ for j = 1:max_IMF
         r = IMF;
     end
 
-
-    IMFs = cat(3,IMFs, IMF);
     curr_signal = curr_signal - IMF;
+    IMFs = cat(3,IMFs, IMF);
 
-%     fprintf('--------------------------\n');
+    fprintf('--------------------------\n');
     % IMF stop creterion
     % if rms(IMF)./rms(signal) < threshold
     %     fprintf('Meet IMF stop criterion stop\n');

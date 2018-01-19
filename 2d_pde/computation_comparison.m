@@ -9,15 +9,18 @@ signal = double(signal(:,:,1));
 % Parameter Setting
 k = 1./2*(0.1*pi)^2;
 T = 20;
-IMF_num = 3;
 iter_num = 100;
-fprintf('For Diffusion-based EMD, the computation time is: \n');
-tic
-[IMFs, residual] = pde_emd(signal, k, T, iter_num, IMF_num, 0, 0, 0.01);
-toc
 
-fprintf('For BEMD, the computation time is: \n');`
-tic
-% IMF = bemd(signal,'FIX',iter_num,'MAXMODES',IMF_num);
-IMF = bemd(signal, IMF_num, iter_num);
-toc
+for i = 1:4
+    IMF_num = i;
+    fprintf('%d IMF: For Diffusion-based EMD, the computation time is: \n', i);
+    tic
+    [IMFs, residual] = pde_emd(signal, k, T, iter_num, IMF_num, 0, 0, 0.01);
+    toc
+
+    fprintf('%d IMF: For BEMD, the computation time is: \n', i);
+    tic
+    % IMF = bemd(signal,'FIX',iter_num,'MAXMODES',IMF_num);
+    IMF = bemd(signal, IMF_num, iter_num);
+    toc
+end
