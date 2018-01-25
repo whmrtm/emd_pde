@@ -12,6 +12,7 @@ signal = double(signal(:,:,1));
 figure;
 % mesh(signal);
 image(signal);
+axis square;
 colormap(gray(256));
 title('Signal');
 
@@ -20,6 +21,7 @@ mean_env = conv_mean_env(signal, k, T);
 figure;
 % mesh(mean_env);
 image(mean_env);
+axis square;
 colormap(gray(256));
 title('Mean Surface');
 
@@ -29,6 +31,7 @@ residual = signal - mean_env;
 figure;
 % mesh(residual);
 image(residual)
+axis square;
 colormap(gray(256));
 title('Residule');
 

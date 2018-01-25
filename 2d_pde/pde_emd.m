@@ -34,7 +34,7 @@
 function [IMFs, residual] = pde_emd(signal, k, T, iter_num, max_IMF, stop_criterion, k_finding, threshold)
 
 
-if nargin < 3 or nargin > 8
+if nargin < 3 || nargin > 8
     disp('Error');
 elseif nargin < 4
     iter_num = 50;
@@ -112,17 +112,19 @@ for j = 1:max_IMF
     end
 
     for i = 1:iter_num
-        if mod(i,1) == 0
+        if mod(i,10) == 0
             fprintf(' %i th iterations\n', i);
+            mean_env(1,1)
         end
-        r(1,1)
+
         mean_env = mean_envelope(r, k, T);
-        mean_env(1,1)
+        
+%         mean_env(1,1)
         if sum(sum(isnan(mean_env))) ~= 0
             error 'NaN encountered';
         end
         IMF = r-mean_env;
-        IMF(1,1)
+
         % Stop criterion 1
         if stop_criterion == 1 || stop_criterion == 2
             % mean envelope stop criterion

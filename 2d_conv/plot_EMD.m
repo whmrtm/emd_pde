@@ -11,10 +11,10 @@ title('Signal','FontSize',20);
 
 for i = 1:IMF_num
     figure();
-    image((IMFs(:,:,i)*4+126));
+    image((IMFs(:,:,i))+180);
     axis square;
     % mesh(IMFs(:,:,i));
-    colormap(gray(180));
+    colormap(gray(256));
     title(sprintf('IMF %d', i),'FontSize',20);
 
 end

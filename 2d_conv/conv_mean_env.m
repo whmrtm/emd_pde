@@ -27,9 +27,9 @@
 
 function mean_env = conv_mean_env(signal, k, T)
     sigma = sqrt(2*k*T);
-    % mean_env = imgaussfilt(signal, sigma);
+    mean_env = imgaussfilt(signal, sigma);
     
-    mean_env = imgaussfilt(signal, sigma, 'FilterDomain', 'spatial');
+%     mean_env = imgaussfilt(signal, sigma, 'FilterDomain', 'spatial');
     % mean_env = imgaussfilt(signal, sigma, 'FilterSize', 2*ceil(2*sigma)+1, 'FilterDomain', 'frequency');
     
     % N = size(signal, 1);

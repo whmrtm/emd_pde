@@ -13,12 +13,11 @@ signal = signal(:,:,1);
 
 k = 1./(pi)^2;
 % k = [1./(0.2*pi)^2, 1./(0.4*pi)^2, 1./(0.8*pi)^2];
-T = 20; 
-IMF_num = 1;
-iter_num = 10;
+T = 10; 
+IMF_num = 4;
+iter_num = 100;
 signal = double(signal);
 
-[IMFs, residual] = pde_emd(signal, k, T, iter_num, IMF_num, 1, 1, 0.01);
-
+[IMFs, residual] = pde_emd(signal, k, T, iter_num, IMF_num, 1, 2, 0.01);
 
 plot_EMD(signal, IMFs, residual);

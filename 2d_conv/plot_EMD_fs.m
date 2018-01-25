@@ -18,12 +18,12 @@ else
     imagesc(abs(fftshift(F)));
 end
 axis square;
-suptitle('Signal');
+% suptitle('Signal');
 
 for i = 1:IMF_num
     figure();
     subplot(121);
-    image(IMFs(:,:,i));
+    image(IMFs(:,:,i)+126);
 %     axis square;
     % mesh(IMFs(:,:,i));
     colormap(gray(256));
@@ -35,7 +35,7 @@ for i = 1:IMF_num
         imagesc(abs(fftshift(F)));
     end
 %     axis square;
-    suptitle(sprintf('Convolution-generated IMF %d', i))
+%     suptitle(sprintf('Convolution-generated IMF %d', i))
 
 end
 
@@ -54,6 +54,6 @@ else
 end
 % axis square;
 
-suptitle('Convolution-generated Residual')
+% suptitle('Convolution-generated Residual')
 
 end 

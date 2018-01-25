@@ -34,7 +34,7 @@
 function [IMFs, residual] = conv_emd(signal, k, T, iter_num, max_IMF, stop_criterion, k_finding, threshold)
 
 
-if nargin < 3 or nargin > 8
+if nargin < 3 || nargin > 8
     disp('Error');
 elseif nargin < 4
     iter_num = 50;
@@ -63,10 +63,6 @@ end
 IMFs = [];
 curr_signal = signal;
 
-
-% if k_finding == 2
-%     ks = k;
-% end
 
 
 % The significant part of this 2d method is to redefine the IMF 
@@ -113,17 +109,19 @@ for j = 1:max_IMF
     if k_finding == 2
         k = k*4;
     end
+    
     for i = 1:iter_num
-        % if mod(i,20) == 0
-        %     fprintf(' %i th iterations\n', i);
-        % end
+        if mod(i,20) == 0
+            fprintf(' %i th iterations\n', i);
+%             fprintf(' %f \n', rms(mean_env)./rms(r));
+        end
         mean_env = conv_mean_env(r, k, T);
         IMF = r-mean_env;
 
         % Stop criterion 1
         if stop_criterion == 1 || stop_criterion == 2
             % mean envelope stop criterion
-            if (rms(mean_env)./rms(r)) < threshold
+            if ( rms(rms(mean_env))./ rms(rms(r)) ) < threshold
                 fprintf('Meet mean envelope stop criterion stop\n');
                 break;
             end

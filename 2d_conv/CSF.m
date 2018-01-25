@@ -24,4 +24,4 @@ iter_num = 100;
 
 [IMFs, residual] = conv_emd(signal, k, T, iter_num, IMF_num, 1, 2, 0.01);
 
-plot_EMD(signal,IMFs,residual);
+plot_EMD_fs(signal,IMFs,residual);
