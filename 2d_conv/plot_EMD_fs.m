@@ -3,12 +3,12 @@ IMF_num = size(IMFs,3)
 % Window
 w = hamming(size(signal, 1));
 signal = double(signal);
-log_scale = 0;
+log_scale = 1;
 figure;
 subplot(121)
 image(signal);
 % mesh(signal);
-axis square;
+% axis square;
 colormap(gray(256));
 subplot(122)
 F = fft2(signal.*(w*w'));
@@ -17,8 +17,8 @@ if log_scale
 else
     imagesc(abs(fftshift(F)));
 end
-axis square;
-% suptitle('Signal');
+% axis square;
+suptitle('Signal');
 
 for i = 1:IMF_num
     figure();
@@ -35,7 +35,7 @@ for i = 1:IMF_num
         imagesc(abs(fftshift(F)));
     end
 %     axis square;
-%     suptitle(sprintf('Convolution-generated IMF %d', i))
+    suptitle(sprintf('IMF %d', i))
 
 end
 
@@ -54,6 +54,6 @@ else
 end
 % axis square;
 
-% suptitle('Convolution-generated Residual')
+suptitle('Residual')
 
 end 

@@ -2,7 +2,7 @@
 %Specifying parameters
 nx=40;                           %Number of steps in space(x)
 ny=50;                           %Number of steps in space(y)       
-nt=3000;                           %Number of time steps 
+nt=30;                           %Number of time steps 
 dt=0.01;                         %Width of each time step
 dx=2/(nx-1);                     %Width of space step(x)
 dy=2/(ny-1);                     %Width of space step(y)
@@ -46,10 +46,10 @@ bc=vis*dt*bc;
 
 %Calculating the coefficient matrix for the implicit scheme
 Ex=sparse(2:nx-2,1:nx-3,1,nx-2,nx-2);
-% Ax=Ex+Ex'-2*speye(nx-2);        %Dirichlet B.Cs
+Ax=Ex+Ex'-2*speye(nx-2);        %Dirichlet B.Cs
 Ax(1,1)=-1; Ax(nx-2,nx-2)=-1;  %Neumann B.Cs
 Ey=sparse(2:ny-2,1:ny-3,1,ny-2,ny-2);
-% Ay=Ey+Ey'-2*speye(ny-2);        %Dirichlet B.Cs
+Ay=Ey+Ey'-2*speye(ny-2);        %Dirichlet B.Cs
 Ay(1,1)=-1; Ay(ny-2,ny-2)=-1;  %Neumann B.Cs
 A=kron(Ay/dy^2,speye(nx-2))+kron(speye(ny-2),Ax/dx^2);
 D=speye((nx-2)*(ny-2))-vis*dt*A;
