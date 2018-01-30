@@ -1,4 +1,4 @@
-function mean_env = Copy_of_mean_envelope(signal, k, T)
+function mean_env = mean_envelope(signal, k, T)
 
 
 %Specifying parameters
@@ -55,17 +55,35 @@ D=speye((nx-2)*(ny-2))-vis*dt*A;
 %Calculating the field variable for each time step
 i=2:nx-1;
 j=2:ny-1;
+h = figure;
+
 for it=0:nt
     un=u;
-%     h=surf(x,y,u','EdgeColor','none');       %plotting the field variable
-%     shading interp
-%     axis ([0 nx 0 ny 0 260])
-%     title({['2-D Diffusion with {\nu} = ',num2str(vis)];['time (\itt) = ',num2str(it*dt)]})
-%     xlabel('Spatial co-ordinate (x) \rightarrow')
-%     ylabel('{\leftarrow} Spatial co-ordinate (y)')
-%     zlabel('Transport property profile (u) \rightarrow')
-%     drawnow; 
-%     refreshdata(h)
+
+    % h=surf(x,y,u','EdgeColor','none');       %plotting the field variable
+    surf(x,y,u','EdgeColor','none');       %plotting the field variable
+    shading interp
+    axis ([0 nx 0 ny 0 256])
+    title({['2-D Diffusion with {\nu} = ',num2str(vis)];['time (\itt) = ',num2str(it*dt)]})
+    xlabel('Spatial co-ordinate (x) \rightarrow')
+    ylabel('{\leftarrow} Spatial co-ordinate (y)')
+    zlabel('Transport property profile (u) \rightarrow')
+    drawnow; 
+
+    % Capture the plot as an image 
+    frame = getframe(h);
+    filename = 'mean_envelope_demo';
+    im = frame2im(frame); 
+    [imind,cm] = rgb2ind(im,256); 
+    % Write to the GIF File 
+    if it == 0 
+        imwrite(imind,cm,filename,'gif', 'Loopcount',inf); 
+    else 
+        imwrite(imind,cm,filename,'gif','WriteMode','append'); 
+    end 
+
+
+    refreshdata(h)
     %Uncomment as necessary
     %Implicit method:
     U=un;U(1,:)=[];U(end,:)=[];U(:,1)=[];U(:,end)=[];

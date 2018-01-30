@@ -1,4 +1,4 @@
-signal = imread('./img/texture85.gif');
+signal = imread('./img/fishingboat.jpg');
 signal = signal(:,:,1);
 
 % Generate the signal
