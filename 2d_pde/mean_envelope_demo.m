@@ -1,5 +1,14 @@
-signal = imread('./img/fishingboat.jpg');
-signal = signal(:,:,1);
+% signal = imread('./img/fishingboat.jpg');
+% signal = signal(:,:,1);
+
+sz = [800,800];  %size of image [y,x], in pixels
+[x,y]= meshgrid(linspace(1,5,sz(2)),linspace(0,1,sz(1)));
+img = sin(exp(x)).*(y.^3);
+% img = sin(exp(x));
+
+% img = sin(exp(x)).*(y.^3);
+signal = (img+1)*128;
+
 
 % Generate the signal
 % img_size = 128;
@@ -13,7 +22,7 @@ signal = signal(:,:,1);
 
 
 k = 0.4;
-T = 200;
+T = 100;
 mean_env = mean_envelope(signal,k,T);
 % image(mean_env);
 % colormap(gray(256));
