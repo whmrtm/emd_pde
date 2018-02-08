@@ -73,7 +73,7 @@ figure
 if fs == 0
   imagesc(t,[0,0.5],im,[inf,0]);
   % imagesc(t,[0,0.5],im);
-  ylabel('normalized frequency');
+  ylabel('Normalized Frequency');
   ylim([0,0.2])
 else
   imagesc(t,[0,0.5*fs],im);
@@ -82,7 +82,7 @@ end
 set(gca,'YDir','normal')
 set(gca,'FontSize',15)
 
-xlabel('time')
-title('Hilbert-Huang spectrum')
+xlabel('Time')
+title('Hilbert-Huang Spectrum')
 % colormap gray;
 colorbar();
