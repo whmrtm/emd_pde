@@ -1,8 +1,11 @@
 %% Experiment on different signals using convolution implementation
 
+% Some initialization
 L = 600;
 x = linspace(0,6,L);
 fs = round(L./x(end));
+addpath('~/MEGA/Research/EMD/EMD_PDE/tftb/mfiles');
+
 
 % %Three sinusoids
 % signal = 0.5*cos(2*pi*x) + 2*cos(0.1*pi*x) + 0.8*cos(0.5*pi*x);
@@ -35,8 +38,8 @@ fs = round(L./x(end));
 % signal = sin(12*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 %  sin(9*pi.*[zeros(1,L/2) x(L/2+1:end)]);
 
-signal = 0.6*sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
- sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
+% signal = 0.6*sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
+%  sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
 
 % signal = 100*sin(12*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 %  sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
@@ -96,11 +99,34 @@ signal = 0.6*sin(4*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 % x = linspace(0, round(L/200), L);
 % fs = x./L;
 
-k = 1./(24^2*pi^2);
-T = 20;
+
+
+% -------------------------------------
+% Triangular + sinusoid waveform (nonlinear case)
+
+N = 1024;% # of data samples
+x = 1:N;
+
+% triangular waveform 1
+p1 = fix(N/6);% period
+x1 = triangular_signal(N,p1);
+
+% tone
+f0 = 0.03;% frequency
+x2 = real(fmconst(N,f0));
+
+% triangular waveform 2
+p3 = 5;% period
+x3 = triangular_signal(N,p3);
+
+signal = x1 + 0.4*x2' + .4*x3;
+
+
+k = 1./(12^2*pi^2);
+T = 50;
 % T = 15;
-iter_num = 100;
-IMF_num = 2;
+iter_num = 200;
+IMF_num = 3;
 
 [IMFs, residual] = conv_emd(x, signal, k, T, iter_num, IMF_num, 0, 1, 0.01);
 
