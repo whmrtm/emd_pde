@@ -1,11 +1,11 @@
 % signal = imread('./img/lena_gray.tiff');
 % signal = imread('./img/moon.tiff');
-signal = imread('./img/lena512color.tiff');
+% signal = imread('./img/lena512color.tiff');
 % signal = imread('./img/fishingboat.jpg');
 % signal = imread('./img/brickwall.bmp');
 % signal = imread('./img/texture85.gif');
 % signal = imread('./img/CSF.jpg');
-% signal = imread('./img/Raffia.tiff');
+signal = imread('./img/Raffia.tiff');
 % signal = rgb2gray(signal);
 
 signal = signal(:,:,1);

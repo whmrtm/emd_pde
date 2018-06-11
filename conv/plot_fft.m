@@ -19,7 +19,7 @@ function plot_fft(signal)
     len = floor(length(fftSignal)./2);
     norm_f = linspace(0, 0.5, len);
     figure;
-    plot(norm_f, abs(fftSignal(1:len)))
+    plot(norm_f, abs(fftSignal(1:len)),'LineWidth', 2)
     title('Fourier analysis');
     xlabel('Frequency');
     ylabel('Amplitude');

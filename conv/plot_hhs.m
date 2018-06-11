@@ -26,7 +26,8 @@ function plot_hhs(myIMF)
     % h_f_A = h_f_A ./ length(tt);
     figure;
     plot(h_f, h_f_A, 'LineWidth', 2);
-    xlim([0 0.2])
+    % xlim([0 0.2])
+    xlim([0 0.5])
     xlabel('Normalized Frequency', 'FontSize', 15);
     ylabel('Amplitude', 'FontSize', 15);
     title('Hilbert Spectrum','FontSize', 15);

@@ -7,8 +7,8 @@ fs = round(L./x(end));
 addpath('~/MEGA/Research/EMD/EMD_PDE/tftb/mfiles');
 
 
-% %Three sinusoids
-% signal = 0.5*cos(2*pi*x) + 2*cos(0.1*pi*x) + 0.8*cos(0.5*pi*x);
+%Three sinusoids
+signal = 0.5*cos(20*pi*x) + 2*cos(8*pi*x) + 0.8*cos(0.5*pi*x);
 
 % ---------------------------------
 
@@ -47,7 +47,7 @@ addpath('~/MEGA/Research/EMD/EMD_PDE/tftb/mfiles');
 
 % ---------------------------------
 
-% %ECG data
+%ECG data
 % load('../data/ECG-data/ECG-data');
 % signal = sig_sample_1';
 % L = length(signal);
@@ -82,7 +82,7 @@ addpath('~/MEGA/Research/EMD/EMD_PDE/tftb/mfiles');
 
 % -------------------------------------
 
-% % Music Signal
+% Music Signal
 % load('../data/music-data/piano_sample');
 % signal = piano_sample';
 
@@ -101,51 +101,52 @@ addpath('~/MEGA/Research/EMD/EMD_PDE/tftb/mfiles');
 
 
 
-% -------------------------------------
-% Triangular + sinusoid waveform (nonlinear case)
+% % -------------------------------------
+% % Triangular + sinusoid waveform (nonlinear case)
 
-N = 1024;% # of data samples
-x = 1:N;
+% N = 1024;% # of data samples
+% x = 1:N;
 
-% triangular waveform 1
-p1 = fix(N/6);% period
-x1 = triangular_signal(N,p1);
+% % triangular waveform 1
+% p1 = fix(N/6);% period
+% x1 = triangular_signal(N,p1);
 
-% tone
-f0 = 0.03;% frequency
-x2 = real(fmconst(N,f0));
+% % tone
+% f0 = 0.03;% frequency
+% x2 = real(fmconst(N,f0));
 
-% triangular waveform 2
-p3 = 5;% period
-x3 = triangular_signal(N,p3);
+% % triangular waveform 2
+% p3 = 5;% period
+% x3 = triangular_signal(N,p3);
 
-signal = x1 + 0.4*x2' + .4*x3;
+% signal = x1 + 0.4*x2' + .4*x3;
 
 
-k = 1./(12^2*pi^2);
-T = 50;
+k = 1./(6^2*pi^2);
+T = 20;
 % T = 15;
-iter_num = 200;
+iter_num = 500;
 IMF_num = 3;
 
-[IMFs, residual] = conv_emd(x, signal, k, T, iter_num, IMF_num, 0, 1, 0.01);
+[IMFs, residual] = conv_emd(x, signal, k, T, iter_num, IMF_num, 1, 1, 0.01);
 
 IMF_num = size(IMFs, 1);
 
 % Signal Plot
 figure;
 subplot(IMF_num+2,1,1);
-plot(x, signal, 'LineWidth', 2);
+plot(x, signal, 'LineWidth', 1.5);
 lgd1 = legend('signal');
 lgd1.FontSize = 15;
 
 for i = 1:IMF_num
     subplot(IMF_num+2,1,i+1)
-    plot(x, IMFs(i,:), 'LineWidth', 2)
+    plot(x, IMFs(i,:), 'LineWidth', 1.5)
 end
 
 subplot(IMF_num+2,1,IMF_num+2);
-plot(x, residual, 'LineWidth', 2);
+plot(x, residual, 'LineWidth', 1.5);
+ylim([-1,1])
 lgd2 = legend('residual');
 lgd2.FontSize = 15;
 
@@ -157,4 +158,4 @@ myIMF = [IMFs; residual];
 plot_hhs(myIMF);
 
 % Plot Fourier Spectrums
-% plot_fft(signal);
+plot_fft(signal);

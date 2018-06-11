@@ -111,10 +111,10 @@ for j = 1:max_IMF
     end
     
     for i = 1:iter_num
-        if mod(i,20) == 0
-            fprintf(' %i th iterations\n', i);
+        % if mod(i,20) == 0
+            % fprintf(' %i th iterations\n', i);
 %             fprintf(' %f \n', rms(mean_env)./rms(r));
-        end
+        % end
         mean_env = conv_mean_env(r, k, T);
         IMF = r-mean_env;
 
@@ -122,7 +122,7 @@ for j = 1:max_IMF
         if stop_criterion == 1 || stop_criterion == 2
             % mean envelope stop criterion
             if ( rms(rms(mean_env))./ rms(rms(r)) ) < threshold
-                fprintf('Meet mean envelope stop criterion stop\n');
+                % fprintf('Meet mean envelope stop criterion stop\n');
                 break;
             end
             % % Extremum stop criterion

@@ -112,7 +112,7 @@ function [IMFs, residual] = conv_emd(x, signal, k, T, iter_num, max_IMF, stop_cr
             if stop_criterion == 1 || stop_criterion == 2
                 % mean envelope stop criterion
                 if (rms(mean_env)/rms(r)).^2 < threshold
-                    fprintf('Meet mean envelope stop criterion stop\n');
+                    % fprintf('Meet mean envelope stop criterion stop\n');
                     break;
                 end
                 % Extremum stop criterion
@@ -132,10 +132,10 @@ function [IMFs, residual] = conv_emd(x, signal, k, T, iter_num, max_IMF, stop_cr
         % fprintf('--------------------------\n');
  
         % IMF stop creterion
-        if rms(IMF) < threshold
-            % fprintf('Meet IMF stop criterion stop\n');
-            break;
-        end
+        % if rms(IMF) < threshold
+        %     fprintf('Meet IMF stop criterion stop\n');
+        %     break;
+        % end
 
     end
 

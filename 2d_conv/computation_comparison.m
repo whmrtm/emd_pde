@@ -11,9 +11,9 @@ k = 1./2*(0.1*pi)^2;
 T = 20;
 iter_num = 100;
 
-for i = 1:4
+for i = 1:8
     IMF_num = i;
-    fprintf('%d IMF: For Diffusion-based EMD, the computation time is: \n', i);
+    fprintf('%d IMF: For Diffusion-based EMD (conv), the computation time is: \n', i);
     tic
     [IMFs, residual] = conv_emd(signal, k, T, iter_num, IMF_num, 0, 0, 0.01);
     toc
