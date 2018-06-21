@@ -8,7 +8,7 @@ addpath('~/MEGA/Research/EMD/EMD_PDE/tftb/mfiles');
 
 
 %Three sinusoids
-signal = 0.5*cos(20*pi*x) + 2*cos(8*pi*x) + 0.8*cos(0.5*pi*x);
+% signal = 0.5*cos(20*pi*x) + 2*cos(8*pi*x) + 0.8*cos(0.5*pi*x);
 
 % ---------------------------------
 
@@ -43,6 +43,10 @@ signal = 0.5*cos(20*pi*x) + 2*cos(8*pi*x) + 0.8*cos(0.5*pi*x);
 
 % signal = 100*sin(12*pi.*[x(1:L/2) zeros(1,L/2)] ) + ...
 %  sin(24*pi.*[zeros(1,L/2) x(L/2+1:end)]);
+
+% signal = sin(4*pi.*x) + sin(24*pi.*[zeros(1,L/4) x(L/4+1:L/2) zeros(L/2+1:end)]);
+signal = sin(4*pi.*x) + sin(24*pi.*[zeros(1,L/4) x(L/4+1:end)]);
+
 
 
 % ---------------------------------
@@ -126,7 +130,7 @@ k = 1./(6^2*pi^2);
 T = 20;
 % T = 15;
 iter_num = 500;
-IMF_num = 3;
+IMF_num = 2;
 
 [IMFs, residual] = conv_emd(x, signal, k, T, iter_num, IMF_num, 1, 1, 0.01);
 
